@@ -1,0 +1,36 @@
+
+#ignore thumbnails created by windows
+Thumbs.db
+
+#Ignore files build by Visual Studio
+*.user
+*.pubxml
+*.suo
+*static-test
+*static-ajax
+*.sass-cache
+**/obj
+**/bin
+**/pkg
+**/pkgobj
+#*.obj
+#*.exe
+#*.pdb
+#*.aps
+#*.pch
+#*.vspscc
+#*_i.c
+#*_p.c
+#*.ncb
+#*.tlb
+#*.tlh
+#*.bak
+#*.cache
+#*.ilk
+#*.log
+#*.lib
+#*.sbr
+#*.dll
+
+.vs/config/applicationhost.config
+.vs/

@@ -1,0 +1,12 @@
+﻿<Window x:Name="MusicNope" x:Class="MusicNope.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicNope"
+        mc:Ignorable="d"
+        Title="MusicNope © Christian Schubert 2017" Height="420" Width="420" Background="Black" Foreground="White" Closing="MusicNope_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid Margin="0">
+        <local:LocalControl x:Name="LocalSpotifyControl" Height="Auto" Width="Auto"/>
+    </Grid>
+</Window>
