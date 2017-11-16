@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace MusicNope
+﻿namespace MusicNope
 {
     public partial class MainWindow
     {

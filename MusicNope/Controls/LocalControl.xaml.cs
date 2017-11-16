@@ -1,11 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using MusicNope.Controls;
 using SpotifyAPI.Local;
 using SpotifyAPI.Local.Enums;
 using SpotifyAPI.Local.Models;
@@ -22,11 +25,14 @@ namespace MusicNope
         private Track m_CurrentTrack;
         private MemoryStream m_AlbumBitmapStream;
         private bool m_IsPlaying;
+        private BackgroundWorker m_ConnectBackgroundWorker;
+        private LoaderMessageControl m_LoaderMessageControl;
+
+        public bool IsConnected { get; private set; }
 
         public LocalControl()
         {
             InitializeComponent();
-
             m_Spotify = new SpotifyLocalAPI();
             m_Spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
             m_Spotify.OnTrackChange += _spotify_OnTrackChange;
@@ -50,31 +56,56 @@ namespace MusicNope
 
         public void Connect()
         {
-            if (!SpotifyLocalAPI.IsSpotifyRunning())
-            {
-                MessageBox.Show(@"Spotify isn't running!");
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 return;
-            }
-            if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-            {
-                MessageBox.Show(@"SpotifyWebHelper isn't running!");
-                return;
-            }
 
-            bool successful = m_Spotify.Connect();
-            if (successful)
+            m_LoaderMessageControl = LoaderMessageControl.ShowLoader("Connecting to Spotify...");
+            MainGrid.Children.Add(m_LoaderMessageControl);
+
+            m_ConnectBackgroundWorker = new BackgroundWorker { WorkerReportsProgress = true };
+            m_ConnectBackgroundWorker.DoWork += (sender, args) =>
             {
-                //btnConnect.Content = @"Connection to Spotify successful";
-                //btnConnect.IsEnabled = false;
-                UpdateInfos();
-                m_Spotify.ListenForEvents = true;
-            }
-            else
+                BackgroundWorker bw = (BackgroundWorker)sender;
+                while (!SpotifyLocalAPI.IsSpotifyRunning())
+                {
+                    bw.ReportProgress(0);
+                    Thread.Sleep(1000);
+                }
+
+                while (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+                {
+                    bw.ReportProgress(50);
+                    Thread.Sleep(1000);
+                }
+                bw.ReportProgress(100);
+                Thread.Sleep(3000);
+            };
+            m_ConnectBackgroundWorker.ProgressChanged += (sender, args) =>
             {
-                MessageBoxResult res = MessageBox.Show(@"Couldn't connect to the spotify client. Retry?", @"Spotify", MessageBoxButton.YesNo);
-                if (res == (MessageBoxResult)DialogResult.Yes)
-                    Connect();
-            }
+                // Update if we have connected to the different processes
+                if (args.ProgressPercentage != 100)
+                    m_LoaderMessageControl.SetMessage("Spotify isn't running...");
+                else
+                    m_LoaderMessageControl.SetMessage("Connecting to Spotify...");
+            };
+            m_ConnectBackgroundWorker.RunWorkerCompleted += (sender, args) =>
+            {
+                IsConnected = m_Spotify.Connect();
+                if (IsConnected)
+                {
+                    UpdateInfos();
+                    m_Spotify.ListenForEvents = true;
+                }
+                else
+                {
+                    MessageBoxResult res = MessageBox.Show(@"Couldn't connect to the spotify client. Retry?", @"Spotify", MessageBoxButton.YesNo);
+                    if (res == (MessageBoxResult)DialogResult.Yes)
+                        Connect();
+                }
+                m_ConnectBackgroundWorker.Dispose();
+                MainGrid.Children.Remove(m_LoaderMessageControl);
+            };
+            m_ConnectBackgroundWorker.RunWorkerAsync();
         }
 
         public void UpdateInfos()
@@ -155,7 +186,7 @@ namespace MusicNope
         public void UpdatePlayingStatus(bool playing)
         {
             m_IsPlaying = playing;
-            Uri imageUri = m_IsPlaying ? new Uri("/Images/Pause.png", UriKind.Relative) : new Uri("Images/Play.png", UriKind.Relative);
+            Uri imageUri = m_IsPlaying ? new Uri("../Resources/Images/Pause.png", UriKind.Relative) : new Uri("../Resources/Images/Play.png", UriKind.Relative);
             PlayPauseImage.Source = new BitmapImage(imageUri);
         }
 
@@ -176,6 +207,9 @@ namespace MusicNope
                 Dispatcher.Invoke(() => _spotify_OnTrackTimeChange(sender, e));
                 return;
             }
+
+            if (m_CurrentTrack == null)
+                return;
 
             CurrentTimeLabel.Content = $@"{FormatTime(e.TrackTime)}";
             EndTimeLabel.Content = $@"{FormatTime(m_CurrentTrack.Length)}";

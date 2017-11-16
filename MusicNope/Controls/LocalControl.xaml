@@ -12,7 +12,7 @@
             <Canvas x:Name="ExpandRetractCanvas" Height="16" VerticalAlignment="Top" Cursor="Hand" MouseEnter="ExpandRetractCanvas_MouseEnter" MouseLeave="ExpandRetractCanvas_MouseLeave" MouseDown="ExpandRetractCanvas_MouseDown" Background="Black" Opacity="0" Panel.ZIndex="1" />
             <Image x:Name="ExpandRetractImage" Height="16" Width="16" VerticalAlignment="Top" Opacity="0.2" HorizontalAlignment="Center">
                 <Image.Source>
-                    <BitmapImage UriSource="Images/ExpandRetract.png"/>
+                    <BitmapImage UriSource="../Resources/Images/ExpandRetract.png"/>
                 </Image.Source>
             </Image>
             <Label x:Name="TitleLinkLabel" Content="Track Title" Margin="10,16,0,0" VerticalAlignment="Top" Foreground="White" Padding="0" FontFamily="Leelawadee" FontSize="24" Cursor="Hand" HorizontalAlignment="Left"/>
@@ -24,7 +24,7 @@
             </WrapPanel>
             <Image x:Name="PlayPauseImage" HorizontalAlignment="Right" Height="64" Margin="0,46,10,0" VerticalAlignment="Top" Width="64" MouseUp="PlayPauseImage_MouseUp" Cursor="Hand">
                 <Image.Source>
-                    <BitmapImage UriSource="Images/Play.png"/>
+                    <BitmapImage UriSource="../Resources/Images/Play.png"/>
                 </Image.Source>
             </Image>
             <Grid VerticalAlignment="Top" Margin="10,93,80,0">
