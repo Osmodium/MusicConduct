@@ -188,5 +188,8 @@
   <ItemGroup>
     <Resource Include="Resources\Images\ajax-loader.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\placeholder.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

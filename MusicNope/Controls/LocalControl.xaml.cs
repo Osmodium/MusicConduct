@@ -75,16 +75,16 @@ namespace MusicNope
                         continue;
                     }
 
-                    if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-                    {
-                        bw.ReportProgress(50);
-                        Thread.Sleep(1000);
-                        continue;
-                    }
+                    //if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+                    //{
+                    //    bw.ReportProgress(50);
+                    //    Thread.Sleep(1000);
+                    //    continue;
+                    //}
 
                     if (IsConnected)
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(10000);
                         continue;
                     }
                     bw.ReportProgress(90);
