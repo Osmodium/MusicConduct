@@ -51,10 +51,10 @@ namespace MusicNope
 
             TitleLinkLabel.MouseEnter += LinkLabel_MouseEnter;
             TitleLinkLabel.MouseLeave += LinkLabel_MouseLeave;
-            Connect();
+            RunBackgroundWorker();
         }
 
-        public void Connect()
+        public void RunBackgroundWorker()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 return;
@@ -66,46 +66,82 @@ namespace MusicNope
             m_ConnectBackgroundWorker.DoWork += (sender, args) =>
             {
                 BackgroundWorker bw = (BackgroundWorker)sender;
-                while (!SpotifyLocalAPI.IsSpotifyRunning())
+                while (true)
                 {
-                    bw.ReportProgress(0);
-                    Thread.Sleep(1000);
-                }
+                    if (!SpotifyLocalAPI.IsSpotifyRunning())
+                    {
+                        bw.ReportProgress(0);
+                        Thread.Sleep(1000);
+                        continue;
+                    }
 
-                while (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-                {
-                    bw.ReportProgress(50);
-                    Thread.Sleep(1000);
+                    if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+                    {
+                        bw.ReportProgress(50);
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+
+                    if (IsConnected)
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                    bw.ReportProgress(90);
+                    Thread.Sleep(3000);
+                    bw.ReportProgress(100);
                 }
-                bw.ReportProgress(100);
-                Thread.Sleep(3000);
             };
             m_ConnectBackgroundWorker.ProgressChanged += (sender, args) =>
             {
-                // Update if we have connected to the different processes
-                if (args.ProgressPercentage != 100)
-                    m_LoaderMessageControl.SetMessage("Spotify isn't running...");
-                else
-                    m_LoaderMessageControl.SetMessage("Connecting to Spotify...");
+                switch (args.ProgressPercentage)
+                {
+                    case 90:
+                    {
+                        m_LoaderMessageControl?.SetMessage("Connecting to Spotify...");
+                        break;
+                    }
+                    case 100:
+                    {
+                        if (IsConnected)
+                            break;
+                        Connect();
+                        break;
+                    }
+                    default:
+                    {
+                        IsConnected = false;
+
+                        if (m_LoaderMessageControl != null)
+                        {
+                            m_LoaderMessageControl.SetMessage("Spotify isn't running...");
+                            break;
+                        }
+                        m_LoaderMessageControl = LoaderMessageControl.ShowLoader("Spotify isn't running...");
+                        MainGrid.Children.Add(m_LoaderMessageControl);
+                        break;
+                    }
+                }
             };
             m_ConnectBackgroundWorker.RunWorkerCompleted += (sender, args) =>
             {
-                IsConnected = m_Spotify.Connect();
-                if (IsConnected)
-                {
-                    UpdateInfos();
-                    m_Spotify.ListenForEvents = true;
-                }
-                else
-                {
-                    MessageBoxResult res = MessageBox.Show(@"Couldn't connect to the spotify client. Retry?", @"Spotify", MessageBoxButton.YesNo);
-                    if (res == (MessageBoxResult)DialogResult.Yes)
-                        Connect();
-                }
-                m_ConnectBackgroundWorker.Dispose();
-                MainGrid.Children.Remove(m_LoaderMessageControl);
+                // Never being used since the worker is always checking for Spotify...
             };
             m_ConnectBackgroundWorker.RunWorkerAsync();
+        }
+
+        private void Connect()
+        {
+            IsConnected = m_Spotify.Connect();
+            if (!IsConnected) 
+                return;
+            UpdateInfos();
+            m_Spotify.ListenForEvents = true;
+            if (m_LoaderMessageControl == null)
+                return;
+            m_LoaderMessageControl.Dispose();
+            MainGrid.Children.Remove(m_LoaderMessageControl);
+            m_LoaderMessageControl = null;
         }
 
         public void UpdateInfos()
@@ -114,7 +150,6 @@ namespace MusicNope
             if (status == null)
                 return;
 
-            //Basic Spotify Infos
             UpdatePlayingStatus(status.Playing);
             //clientVersionLabel.Content = $"Client Version: {status.ClientVersion}";
             //versionLabel.Content = $"Version: {status.Version}";
@@ -133,6 +168,8 @@ namespace MusicNope
 
             if (track.IsAd())
                 return; //Don't process further, maybe null values
+
+            // TODO ALLL THE RULES THINGS
 
             // track.TrackType //! Contains "normal" og "explicit" 
 
@@ -295,6 +332,7 @@ namespace MusicNope
         {
             m_Spotify?.Dispose();
             m_AlbumBitmapStream?.Dispose();
+            m_ConnectBackgroundWorker?.Dispose();
         }
 
         private void PlayPauseImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)

@@ -17,7 +17,12 @@
     <Grid x:Name="MainGrid" Background="#BF000000">
         <TextBlock x:Name="MessageTextBlock" TextWrapping="WrapWithOverflow" Foreground="White" Margin="0,107,0,170" FontFamily="Leelawadee" FontSize="20" VerticalAlignment="Center" Text="Test" HorizontalAlignment="Center"/>
         <Grid x:Name="LoaderGrid" VerticalAlignment="Center" Margin="0">
-            <Image gif:ImageBehavior.AnimatedSource="../Resources/Images/ajax-loader.gif" gif:ImageBehavior.RepeatBehavior="Forever" Stretch="None" Margin="0,10,0,10" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="220"/>
+            <Image x:Name="LoaderImage" gif:ImageBehavior.AnimatedSource="../Resources/Images/ajax-loader.gif" gif:ImageBehavior.RepeatBehavior="Forever" Stretch="None" Margin="0,10,0,10" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="220"/>
+            <Rectangle x:Name="LoaderImageTint" Width="{Binding ActualWidth, ElementName=LoaderImage, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=LoaderImage, Mode=OneWay}" Fill="#33FF0000">
+                <Rectangle.OpacityMask>
+                    <ImageBrush ImageSource="{Binding Source, ElementName=LoaderImage}"/>
+                </Rectangle.OpacityMask>
+            </Rectangle>
         </Grid>
         <Grid x:Name="ControlGrid" VerticalAlignment="Bottom">
             <Label x:Name="ButtonLeft" Content="Test" Foreground="White" FontFamily="Leelawadee" Cursor="Hand" BorderBrush="{Binding Mode=OneWay, Source={StaticResource LabelButtonBorderStyle}}" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20"/>
