@@ -308,11 +308,6 @@ namespace MusicNope
             return mins + ":" + secs;
         }
 
-        private void btnConnect_Click(object sender, RoutedEventArgs e)
-        {
-            Connect();
-        }
-
         private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         private readonly Brush m_LinkLabelForegroundHighlight = new SolidColorBrush(Color.FromRgb(35, 255, 200));
 

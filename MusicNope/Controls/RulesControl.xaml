@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="MusicNope.Controls.RulesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MusicNope.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="Top" Height="61*"/>
+            <RowDefinition x:Name="Mid" Height="89*"/>
+        </Grid.RowDefinitions>
+        <CheckBox x:Name="SkipExplicitSongsCheckBox" Content="Skip explicit songs" Margin="10,10,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee" FontSize="14" Height="32" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
+        <CheckBox x:Name="SkipRepeatedSongsCheckBox" Content="{Binding Value, ElementName=RepeatedSongTimeSlider}" ContentStringFormat="Skip repeating songs ({0} hours)" Margin="10,47,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee" FontSize="14" Height="32" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}"/>
+        <Slider x:Name="RepeatedSongTimeSlider" Margin="10,84,10,0" VerticalAlignment="Top" Height="28" Maximum="24" SmallChange="0.5" TickPlacement="BottomRight" LargeChange="3" TickFrequency="0.5" IsEnabled="{Binding IsChecked, ElementName=checkBox}" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" AutoToolTipPrecision="1" Minimum="0.5" Style="{Binding Mode=OneWay, Source={StaticResource Horizontal_Slider}}"/>
+        <ListBox x:Name="RulesList" Margin="10" Grid.Row="1"  Background="#33FFFFFF" Style="{Binding Mode=OneWay, Source={StaticResource RoundedListBoxStyle}}">
+            <CheckBox Content="artist contatins 'Volbeat'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True" Margin="0"/>
+            <CheckBox Content="artist equals 'Nickleback'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" />
+            <CheckBox Content="track contains 'live'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
+            <CheckBox Content="track contains 'live'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
+            <CheckBox Content="track contains 'live'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
+            <CheckBox Content="track contains 'live'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
+            <CheckBox Content="track contains 'live'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
+            
+        </ListBox>
+    </Grid>
+</UserControl>
