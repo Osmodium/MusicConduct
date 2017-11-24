@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MusicNope.Controls
+namespace MusicConduct.Controls
 {
     /// <summary>
     /// Interaction logic for RulesControl.xaml

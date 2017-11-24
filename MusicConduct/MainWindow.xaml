@@ -1,11 +1,11 @@
-﻿<Window x:Name="MusicNope" x:Class="MusicNope.MainWindow"
+﻿<Window x:Name="MusicConduct" x:Class="MusicConduct.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MusicNope"
+        xmlns:local="clr-namespace:MusicConduct"
         mc:Ignorable="d"
-        Title="Rules of Music" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicNope_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="Rules of Music" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicConduct_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

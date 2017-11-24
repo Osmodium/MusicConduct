@@ -1,8 +1,8 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:MusicNope"
-    xmlns:controls="clr-namespace:MusicNope.Controls">
+    xmlns:local="clr-namespace:MusicConduct"
+    xmlns:controls="clr-namespace:MusicConduct.Controls">
 
     <Style TargetType="{x:Type controls:RulesControl}">
         <Setter Property="Template">

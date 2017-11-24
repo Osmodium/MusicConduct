@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MusicNope
+namespace MusicConduct
 {
     /// <summary>
     /// Interaction logic for AboutControl.xaml

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using MusicNope.Controls;
+using MusicConduct.Controls;
 using SpotifyAPI.Local;
 using SpotifyAPI.Local.Enums;
 using SpotifyAPI.Local.Models;
@@ -17,7 +17,7 @@ using Color = System.Windows.Media.Color;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
-namespace MusicNope
+namespace MusicConduct
 {
     public partial class LocalControl : IDisposable
     {

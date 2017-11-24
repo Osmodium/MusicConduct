@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Color = System.Windows.Media.Color;
 
-namespace MusicNope.Controls
+namespace MusicConduct.Controls
 {
     /// <summary>
     /// Interaction logic for LoaderMessageControl.xaml

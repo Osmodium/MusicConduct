@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace MusicNope
+namespace MusicConduct
 {
     public partial class MainWindow
     {
@@ -54,7 +54,7 @@ namespace MusicNope
             linkLabel.Foreground = m_LinkLabelForegroundDefault;
         }
 
-        private void MusicNope_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MusicConduct_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             LocalSpotifyControl.Dispose();
         }

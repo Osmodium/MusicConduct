@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace MusicNope.Utility
+namespace MusicConduct.Utility
 {
     public static class Retry
     {
