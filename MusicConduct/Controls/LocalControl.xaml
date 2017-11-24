@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicConduct"
-             xmlns:Properties="clr-namespace:MusicConduct.Properties" xmlns:Controls="clr-namespace:MusicConduct.Controls" x:Name="userControl" x:Class="MusicConduct.LocalControl"
+             xmlns:Properties="clr-namespace:MusicConduct.Properties" xmlns:Controls="clr-namespace:MusicConduct.Controls" x:Name="userControl" x:Class="MusicConduct.Controls.LocalControl"
              mc:Ignorable="d" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" Width="420" Foreground="White" Background="Black">
     <Grid x:Name="MainGrid" Background="White">
         <Image x:Name="AlbumImage" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Stretch="UniformToFill" Source="/MusicConduct;component/Resources/Images/placeholder.png"/>

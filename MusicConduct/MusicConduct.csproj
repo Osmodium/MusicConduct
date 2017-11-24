@@ -107,6 +107,8 @@
     <Compile Include="Controls\AboutControl.xaml.cs">
       <DependentUpon>AboutControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\Constants.cs" />
+    <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\Retry.cs" />
     <Page Include="Controls\LoaderMessageControl.xaml">
       <SubType>Designer</SubType>
@@ -205,6 +207,14 @@
   <ItemGroup>
     <Resource Include="Resources\Images\twitter.png" />
     <Resource Include="Resources\Images\facebook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\facebookBW.png" />
+    <Resource Include="Resources\Images\twitterBW.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\github.png" />
+    <Resource Include="Resources\Images\githubBW.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

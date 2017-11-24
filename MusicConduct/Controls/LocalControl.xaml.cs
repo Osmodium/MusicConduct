@@ -4,20 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using MusicConduct.Controls;
+using MusicConduct.Utility;
 using SpotifyAPI.Local;
 using SpotifyAPI.Local.Enums;
 using SpotifyAPI.Local.Models;
-using Brush = System.Windows.Media.Brush;
-using Color = System.Windows.Media.Color;
-using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
-namespace MusicConduct
+namespace MusicConduct.Controls
 {
     public partial class LocalControl : IDisposable
     {
@@ -313,19 +309,16 @@ namespace MusicConduct
             return mins + ":" + secs;
         }
 
-        private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-        private readonly Brush m_LinkLabelForegroundHighlight = new SolidColorBrush(Color.FromRgb(35, 255, 200));
-
         private void LinkLabel_MouseEnter(object sender, MouseEventArgs e)
         {
             System.Windows.Controls.Label linkLabel = (System.Windows.Controls.Label)sender;
-            linkLabel.Foreground = m_LinkLabelForegroundHighlight;
+            linkLabel.Foreground = Constants.LinkLabelForegroundHighlight;
         }
 
         private void LinkLabel_MouseLeave(object sender, MouseEventArgs e)
         {
             System.Windows.Controls.Label linkLabel = (System.Windows.Controls.Label)sender;
-            linkLabel.Foreground = m_LinkLabelForegroundDefault;
+            linkLabel.Foreground = Constants.LinkLabelForegroundWhite;
         }
 
         public void Dispose()

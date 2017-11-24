@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using MusicConduct.Controls;
 
 namespace MusicConduct
 {
@@ -9,6 +9,8 @@ namespace MusicConduct
     {
         private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         private readonly Brush m_LinkLabelForegroundHighlight = new SolidColorBrush(Color.FromRgb(35, 255, 200));
+
+        private Controls.AboutControl m_AboutControl = null;
 
         public MainWindow()
         {
@@ -38,8 +40,28 @@ namespace MusicConduct
 
         private void AboutLinkLabelOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            AboutControl aboutControl = new AboutControl();
-            ContentGrid.Children.Add(aboutControl);
+            if (m_AboutControl == null)
+            {
+                m_AboutControl = new AboutControl();
+                ContentGrid.Children.Add(m_AboutControl);
+                m_AboutControl.CloseAbout += AboutControl_CloseAbout;
+            }
+            else
+            {
+                AboutControl_CloseAbout(m_AboutControl);
+            }
+        }
+
+        private void AboutControl_CloseAbout(AboutControl aboutControl)
+        {
+            if (aboutControl.Equals(m_AboutControl))
+            {
+                m_AboutControl.Dispose();
+                ContentGrid.Children.Remove(m_AboutControl);
+                m_AboutControl = null;
+                return;
+            }
+            aboutControl.Dispose();
         }
 
         private void LinkLabel_MouseEnter(object sender, MouseEventArgs e)

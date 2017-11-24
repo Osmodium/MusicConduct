@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicConduct"
+        xmlns:controls="clr-namespace:MusicConduct.Controls"
         mc:Ignorable="d"
         Title="Rules of Music" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicConduct_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
@@ -41,7 +42,7 @@
         </Border>
         <Border BorderBrush="Transparent" BorderThickness="0" Padding="0">
             <Grid Margin="0" x:Name="ContentGrid">
-                <local:LocalControl x:Name="LocalSpotifyControl" Height="Auto" Width="Auto"/>
+                <controls:LocalControl x:Name="LocalSpotifyControl" Height="Auto" Width="Auto"/>
             </Grid>
         </Border>
     </DockPanel>
