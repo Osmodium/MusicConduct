@@ -75,12 +75,12 @@ namespace MusicNope
                         continue;
                     }
 
-                    //if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-                    //{
-                    //    bw.ReportProgress(50);
-                    //    Thread.Sleep(1000);
-                    //    continue;
-                    //}
+                    if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+                    {
+                        bw.ReportProgress(50);
+                        Thread.Sleep(1000);
+                        continue;
+                    }
 
                     if (IsConnected)
                     {
@@ -133,7 +133,7 @@ namespace MusicNope
         private void Connect()
         {
             IsConnected = m_Spotify.Connect();
-            if (!IsConnected) 
+            if (!IsConnected)
                 return;
             UpdateInfos();
             m_Spotify.ListenForEvents = true;
@@ -159,7 +159,7 @@ namespace MusicNope
                 UpdateTrack(status.Track);
         }
 
-        public async void UpdateTrack(Track track)
+        public void UpdateTrack(Track track)
         {
             m_CurrentTrack = track;
 
@@ -211,6 +211,11 @@ namespace MusicNope
             ArtistLinkLabel.Content = track.ArtistResource.Name;
             ArtistLinkLabel.Tag = track.ArtistResource.Uri;
 
+            UpdateAlbumArt(track);
+        }
+
+        public async void UpdateAlbumArt(Track track)
+        {
             byte[] bitmapBytes = await track.GetAlbumArtAsByteArrayAsync(AlbumArtSize.Size640);
             m_AlbumBitmapStream = new MemoryStream(bitmapBytes) { Position = 0 };
             BitmapImage bitmapImage = new BitmapImage();
@@ -350,11 +355,26 @@ namespace MusicNope
 
         private void ExpandRetractCanvas_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            double from = ControlGrid.ActualHeight;
-            double to = Math.Abs(@from - 120) < 0.1 ? MainGrid.ActualHeight : 120;
+            double to = Math.Abs(ControlGrid.ActualHeight - 120) < 0.1 ? MainGrid.ActualHeight : 120;
+            ExpandRetractRules(to);
+        }
 
+        private void ExpandRetractRules(double to)
+        {
+            double from = ControlGrid.ActualHeight;
             AnimationTimeline animationTimeline = new DoubleAnimation(from, to, new Duration(new TimeSpan(0, 0, 0, 0, 250)));
             ControlGrid.BeginAnimation(HeightProperty, animationTimeline);
+            ExpandRetractImage.RenderTransform = ControlGrid.ActualHeight < MainGrid.ActualHeight ? new RotateTransform(180) : new RotateTransform(0);
+        }
+
+        public void ExpandRules()
+        {
+            ExpandRetractRules(MainGrid.ActualHeight);
+        }
+
+        public void RetractRules()
+        {
+            ExpandRetractRules(120);
         }
     }
 }

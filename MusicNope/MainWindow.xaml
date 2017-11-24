@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicNope"
         mc:Ignorable="d"
-        Title="MusicNope © Christian Schubert 2017" Height="420" Width="420" Background="Black" Foreground="White" Closing="MusicNope_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
-    <Grid Margin="0">
-        <local:LocalControl x:Name="LocalSpotifyControl" Height="Auto" Width="Auto"/>
-    </Grid>
+        Title="Rules of Music" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicNope_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <!--<WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{Binding ActualHeight,ElementName=TitleBarBorder}" CornerRadius="2" GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>-->
+    <DockPanel LastChildFill="True">
+        <Border Background="#FF3BABE3" DockPanel.Dock="Top" Height="20" x:Name="TitleBarBorder">
+            <Grid>
+                <DockPanel>
+                    <TextBlock x:Name="TitleBar" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor ,AncestorType=Window}, FallbackValue=Title}" Margin="10,3,36,3" VerticalAlignment="Center" FontFamily="Leelawadee">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Black" ShadowDepth="1"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <Label x:Name="MinimizeLinkLabel" HorizontalAlignment="Right" Foreground="White" VerticalAlignment="Center" FontFamily="Leelawadee" Content="_" Padding="2,0" Margin="0,0,5,0" FontSize="16" DockPanel.Dock="Right">
+                        <Label.Effect>
+                            <DropShadowEffect Color="Black" ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+                    <Label x:Name="AboutLinkLabel" HorizontalAlignment="Right" Foreground="White" VerticalAlignment="Center" FontFamily="Leelawadee" Content="?" Padding="2,0" Margin="0,0,5,0" FontSize="16" DockPanel.Dock="Right">
+                        <Label.Effect>
+                            <DropShadowEffect Color="Black" ShadowDepth="1"/>
+                        </Label.Effect>
+                    </Label>
+                </DockPanel>
+                <Border x:Name="TitleBarMover" Background="White" Opacity="0" Margin="0,0,35,0" Panel.ZIndex="1"></Border>
+            </Grid>
+        </Border>
+        <Border BorderBrush="Transparent" BorderThickness="0" Padding="0">
+            <Grid Margin="0" x:Name="ContentGrid">
+                <local:LocalControl x:Name="LocalSpotifyControl" Height="Auto" Width="Auto"/>
+            </Grid>
+        </Border>
+    </DockPanel>
+
 </Window>

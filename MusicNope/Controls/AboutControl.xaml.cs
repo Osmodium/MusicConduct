@@ -3,11 +3,11 @@
 namespace MusicNope
 {
     /// <summary>
-    /// Interaction logic for SettingsControl.xaml
+    /// Interaction logic for AboutControl.xaml
     /// </summary>
-    public partial class SettingsControl : UserControl
+    public partial class AboutControl : UserControl
     {
-        public SettingsControl()
+        public AboutControl()
         {
             InitializeComponent();
         }

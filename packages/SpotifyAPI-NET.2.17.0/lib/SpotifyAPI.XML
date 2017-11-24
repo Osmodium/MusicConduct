@@ -169,6 +169,14 @@
             </summary>
             <returns>True, if it's running, false if not</returns>
         </member>
+        <member name="M:SpotifyAPI.Local.SpotifyLocalAPI.IsSpotifyInstalled">
+            <summary>
+            Determines whether [spotify is installed].
+            </summary>
+            <returns>
+              <c>true</c> if [spotify is installed]; otherwise, <c>false</c>.
+            </returns>
+        </member>
         <member name="M:SpotifyAPI.Local.SpotifyLocalAPI.RunSpotify">
             <summary>
             Runs Spotify

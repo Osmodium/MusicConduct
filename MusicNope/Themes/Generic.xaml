@@ -4,7 +4,6 @@
     xmlns:local="clr-namespace:MusicNope"
     xmlns:controls="clr-namespace:MusicNope.Controls">
 
-
     <Style TargetType="{x:Type controls:RulesControl}">
         <Setter Property="Template">
             <Setter.Value>
