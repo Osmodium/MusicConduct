@@ -6,9 +6,21 @@
         xmlns:local="clr-namespace:MusicConduct"
         xmlns:controls="clr-namespace:MusicConduct.Controls"
         mc:Ignorable="d"
-        Title="Rules of Music" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicConduct_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="Music Conduct" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicConduct_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
+            <ContextMenu x:Key="NotifierContextMenu" Placement="MousePoint">
+                <MenuItem Click="Menu_Show">
+                    <MenuItem.Header>
+                        <TextBlock>
+                            <Run FontWeight="Bold">
+                                Show
+                                </Run>
+                        </TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Header="Exit" Click="Menu_Exit"/>
+            </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Resources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -46,5 +58,4 @@
             </Grid>
         </Border>
     </DockPanel>
-
 </Window>

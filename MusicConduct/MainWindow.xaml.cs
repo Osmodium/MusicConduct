@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Drawing;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using MusicConduct.Controls;
+using MusicConduct.Events;
 using MusicConduct.Utility;
-using Brush = System.Windows.Media.Brush;
-using Color = System.Windows.Media.Color;
+using Label = System.Windows.Controls.Label;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MusicConduct
 {
@@ -15,7 +17,7 @@ namespace MusicConduct
         private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         private readonly Brush m_LinkLabelForegroundHighlight = new SolidColorBrush(Color.FromRgb(35, 255, 200));
         private AboutControl m_AboutControl;
-        private Icon m_Icon = null;
+        private NotifyIcon m_NotifyIcon;
 
         public MainWindow()
         {
@@ -31,23 +33,39 @@ namespace MusicConduct
             MinimizeLinkLabel.MouseUp += MinimizeLinkLabelOnMouseUp;
 
             TitleBarMover.MouseDown += TitleBarDockOnMouseDown;
+
+            LocalSpotifyControl.SpotifyLocalEvents.TrackChanged += SpotifyLocalEventsOnTrackChanged;
+        }
+
+        private void SpotifyLocalEventsOnTrackChanged(object o, SpotifyLocalEvents.TrackChangeEventArgs e)
+        {
+            Retry.Do(() =>
+            {
+                string text = $"{e.Title} by {e.Artist}";
+                if (text.Length > 64)
+                    text = text.Substring(0, 60) + "...";
+                m_NotifyIcon.Text = text;
+            }, TimeSpan.FromMilliseconds(1000), 10);
+            
         }
 
         private void InitializeNotificationIcon()
         {
-            m_Icon = WindowsHelper.GetAppIcon(this);
-            if (m_Icon == null)
-                return;
-
-            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon
+            m_NotifyIcon = new NotifyIcon
             {
-                Icon = m_Icon,
+                Icon = Properties.Resources.AppIcon,
                 Visible = true
             };
-            ni.DoubleClick += delegate
+            m_NotifyIcon.DoubleClick += delegate
             {
-                Show();
-                WindowState = WindowState.Normal;
+                ShowApp();
+            };
+            m_NotifyIcon.MouseDown += (sender, args) =>
+            {
+                if (args.Button != MouseButtons.Right) 
+                    return;
+                System.Windows.Controls.ContextMenu menu = (System.Windows.Controls.ContextMenu)FindResource("NotifierContextMenu");
+                menu.IsOpen = true;
             };
         }
 
@@ -66,11 +84,31 @@ namespace MusicConduct
 
         private void MinimizeLinkLabelOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            if (m_Icon == null)
+            if (m_NotifyIcon == null)
                 return;
             WindowState = WindowState.Minimized;
         }
 
+        private void Menu_Show(object sender, RoutedEventArgs e)
+        {
+            ShowApp();
+        }
+
+        private void Menu_Exit(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void ShowApp()
+        {
+            Show();
+            WindowState = WindowState.Normal;
+            Activate();
+            Topmost = true;  
+            Topmost = false; 
+            Focus();         
+        }
+        
         private void AboutLinkLabelOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (m_AboutControl == null)
@@ -99,19 +137,20 @@ namespace MusicConduct
 
         private void LinkLabel_MouseEnter(object sender, MouseEventArgs e)
         {
-            System.Windows.Controls.Label linkLabel = (System.Windows.Controls.Label)sender;
+            Label linkLabel = (Label)sender;
             linkLabel.Foreground = m_LinkLabelForegroundHighlight;
         }
 
         private void LinkLabel_MouseLeave(object sender, MouseEventArgs e)
         {
-            System.Windows.Controls.Label linkLabel = (System.Windows.Controls.Label)sender;
+            Label linkLabel = (Label)sender;
             linkLabel.Foreground = m_LinkLabelForegroundDefault;
         }
 
-        private void MusicConduct_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MusicConduct_Closing(object sender, CancelEventArgs e)
         {
             LocalSpotifyControl.Dispose();
+            m_NotifyIcon.Dispose();
         }
     }
 }

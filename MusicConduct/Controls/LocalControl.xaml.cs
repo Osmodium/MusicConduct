@@ -4,14 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using MusicConduct.Events;
 using MusicConduct.Utility;
 using SpotifyAPI.Local;
 using SpotifyAPI.Local.Enums;
 using SpotifyAPI.Local.Models;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MusicConduct.Controls
 {
@@ -23,7 +25,8 @@ namespace MusicConduct.Controls
         private bool m_IsPlaying;
         private BackgroundWorker m_ConnectBackgroundWorker;
         private LoaderMessageControl m_LoaderMessageControl;
-
+        
+        public SpotifyLocalEvents SpotifyLocalEvents { get; private set; }
         public bool IsConnected { get; private set; }
 
         public LocalControl()
@@ -34,6 +37,8 @@ namespace MusicConduct.Controls
             m_Spotify.OnTrackChange += _spotify_OnTrackChange;
             m_Spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
             //m_Spotify.OnVolumeChange += _spotify_OnVolumeChange;
+
+            SpotifyLocalEvents = new SpotifyLocalEvents();
 
             ArtistLinkLabel.MouseLeftButtonUp += (sender, args) => Process.Start(ArtistLinkLabel.Tag.ToString());
             AlbumLinkLabel.MouseLeftButtonUp += (sender, args) => Process.Start(AlbumLinkLabel.Tag.ToString());
@@ -50,7 +55,7 @@ namespace MusicConduct.Controls
             RunBackgroundWorker();
         }
 
-        public void RunBackgroundWorker()
+        private void RunBackgroundWorker()
         {
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
                 return;
@@ -128,9 +133,14 @@ namespace MusicConduct.Controls
 
         private void Connect()
         {
-            IsConnected = m_Spotify.Connect();
+            Retry.Do(() =>
+            {
+                IsConnected = m_Spotify.Connect();
+            },
+            TimeSpan.FromMilliseconds(1000), 10);
             if (!IsConnected)
                 return;
+            SpotifyLocalEvents.OnConnectionChange(new SpotifyLocalEvents.ConnectedChangeEventArgs { IsConnected = true });
             UpdateInfos();
             m_Spotify.ListenForEvents = true;
             if (m_LoaderMessageControl == null)
@@ -140,7 +150,7 @@ namespace MusicConduct.Controls
             m_LoaderMessageControl = null;
         }
 
-        public void UpdateInfos()
+        private void UpdateInfos()
         {
             StatusResponse status = m_Spotify.GetStatus();
             if (status == null)
@@ -155,15 +165,18 @@ namespace MusicConduct.Controls
                 UpdateTrack(status.Track);
         }
 
-        public void UpdateTrack(Track track)
+        private void UpdateTrack(Track track)
         {
             m_CurrentTrack = track;
 
-            //advertLabel.Content = track.IsAd() ? "ADVERT" : "";
-            TimeProgressBar.Maximum = track.Length;
-
+            // Handle ads
             if (track.IsAd())
+            {
+                SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = "Ad" });
+                AlbumImage.Source = new BitmapImage(new Uri("/MusicConduct;component/Resources/Images/placeholder.png", UriKind.Relative));
+                TrackDetailsGrid.Visibility = Visibility.Hidden;
                 return; //Don't process further, maybe null values
+            }
 
             // TODO ALLL THE RULES THINGS
 
@@ -207,10 +220,16 @@ namespace MusicConduct.Controls
             ArtistLinkLabel.Content = track.ArtistResource.Name;
             ArtistLinkLabel.Tag = track.ArtistResource.Uri;
 
+            TimeProgressBar.Maximum = track.Length;
+
+            TrackDetailsGrid.Visibility = Visibility.Visible;
+
+            SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = track.TrackResource.Name, Album = track.AlbumResource.Name, Artist = track.ArtistResource.Name });
+
             UpdateAlbumArt(track);
         }
 
-        public async void UpdateAlbumArt(Track track)
+        private async void UpdateAlbumArt(Track track)
         {
             byte[] bitmapBytes = await track.GetAlbumArtAsByteArrayAsync(AlbumArtSize.Size640);
             m_AlbumBitmapStream = new MemoryStream(bitmapBytes) { Position = 0 };
@@ -221,7 +240,7 @@ namespace MusicConduct.Controls
             AlbumImage.Source = bitmapImage;
         }
 
-        public void UpdatePlayingStatus(bool playing)
+        private void UpdatePlayingStatus(bool playing)
         {
             m_IsPlaying = playing;
             Uri imageUri = m_IsPlaying ? new Uri("../Resources/Images/Pause.png", UriKind.Relative) : new Uri("../Resources/Images/Play.png", UriKind.Relative);
@@ -311,13 +330,13 @@ namespace MusicConduct.Controls
 
         private void LinkLabel_MouseEnter(object sender, MouseEventArgs e)
         {
-            System.Windows.Controls.Label linkLabel = (System.Windows.Controls.Label)sender;
+            Label linkLabel = (Label)sender;
             linkLabel.Foreground = Constants.LinkLabelForegroundHighlight;
         }
 
         private void LinkLabel_MouseLeave(object sender, MouseEventArgs e)
         {
-            System.Windows.Controls.Label linkLabel = (System.Windows.Controls.Label)sender;
+            Label linkLabel = (Label)sender;
             linkLabel.Foreground = Constants.LinkLabelForegroundWhite;
         }
 
@@ -328,7 +347,7 @@ namespace MusicConduct.Controls
             m_ConnectBackgroundWorker?.Dispose();
         }
 
-        private void PlayPauseImage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void PlayPauseImage_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (m_IsPlaying)
                 m_Spotify?.Pause();
@@ -346,7 +365,7 @@ namespace MusicConduct.Controls
             ExpandRetractImage.Opacity = 0.2;
         }
 
-        private void ExpandRetractCanvas_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ExpandRetractCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             double to = Math.Abs(ControlGrid.ActualHeight - 120) < 0.1 ? MainGrid.ActualHeight : 120;
             ExpandRetractRules(to);
