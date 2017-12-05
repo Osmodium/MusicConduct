@@ -17,6 +17,7 @@ using SpotifyAPI.Local.Models;
 
 namespace MusicConduct.Controls
 {
+    
     public partial class LocalControl : IDisposable
     {
         private readonly SpotifyLocalAPI m_Spotify;
@@ -178,39 +179,17 @@ namespace MusicConduct.Controls
                 return; //Don't process further, maybe null values
             }
 
-            // TODO ALLL THE RULES THINGS
+            if (RulesControl.SkipExplicitSongsCheckBox.IsChecked.HasValue && RulesControl.SkipExplicitSongsCheckBox.IsChecked.Value)
+            {
+                if(track.TrackType.Equals("explicit", StringComparison.InvariantCultureIgnoreCase))
+                    m_Spotify.Skip();
+            }
 
-            // track.TrackType //! Contains "normal" og "explicit" 
+            if (RulesControl.ShouldSkipTrack(track))
+                m_Spotify.Skip();
 
-            //for (int i = 0; i < DenyArtistsList.Items.Count; i++)
-            //{
-            //    System.Windows.Controls.CheckBox artist = (System.Windows.Controls.CheckBox) DenyArtistsList.Items[i];
-
-            //    if (artist.IsChecked.HasValue && artist.IsChecked.Value && artist.Content.ToString().Equals(track.ArtistResource.Name, StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        m_Spotify.Skip();
-            //        return;
-            //    }
-            //}
-
-            //for (int i = 0; i < DenyAlbumsList.Items.Count; i++)
-            //{
-            //    System.Windows.Controls.CheckBox album = (System.Windows.Controls.CheckBox)DenyAlbumsList.Items[i];
-            //    if (!album.IsChecked.HasValue || !album.IsChecked.Value || !album.Content.ToString().Equals(track.AlbumResource.Name, StringComparison.InvariantCultureIgnoreCase))
-            //        continue;
-            //    m_Spotify.Skip();
-            //    return;
-            //}
-
-            //for (int i = 0; i < DenySongsList.Items.Count; i++)
-            //{
-            //    System.Windows.Controls.CheckBox song = (System.Windows.Controls.CheckBox)DenySongsList.Items[i];
-            //    if (!song.IsChecked.HasValue || !song.IsChecked.Value || !song.Content.ToString().Equals(track.TrackResource.Name, StringComparison.InvariantCultureIgnoreCase))
-            //        continue;
-            //    m_Spotify.Skip();
-            //    return;
-            //}
-
+            // TODO skip repeated tracks
+            
             TitleLinkLabel.Content = track.TrackResource.Name;
             TitleLinkLabel.Tag = track.TrackResource.Uri;
 
@@ -340,12 +319,7 @@ namespace MusicConduct.Controls
             linkLabel.Foreground = Constants.LinkLabelForegroundWhite;
         }
 
-        public void Dispose()
-        {
-            m_Spotify?.Dispose();
-            m_AlbumBitmapStream?.Dispose();
-            m_ConnectBackgroundWorker?.Dispose();
-        }
+        
 
         private void PlayPauseImage_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -374,7 +348,7 @@ namespace MusicConduct.Controls
         private void ExpandRetractRules(double to)
         {
             double from = ControlGrid.ActualHeight;
-            AnimationTimeline animationTimeline = new DoubleAnimation(from, to, new Duration(new TimeSpan(0, 0, 0, 0, 250)));
+            AnimationTimeline animationTimeline = new DoubleAnimation(from, to, new Duration(TimeSpan.FromMilliseconds(250)));
             ControlGrid.BeginAnimation(HeightProperty, animationTimeline);
             ExpandRetractImage.RenderTransform = ControlGrid.ActualHeight < MainGrid.ActualHeight ? new RotateTransform(180) : new RotateTransform(0);
         }
@@ -387,6 +361,14 @@ namespace MusicConduct.Controls
         public void RetractRules()
         {
             ExpandRetractRules(120);
+        }
+
+        public void Dispose()
+        {
+            m_Spotify?.Dispose();
+            m_AlbumBitmapStream?.Dispose();
+            m_ConnectBackgroundWorker?.Dispose();
+            RulesControl.Dispose();
         }
     }
 }

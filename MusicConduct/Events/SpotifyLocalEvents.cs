@@ -1,4 +1,5 @@
 ﻿using System;
+using MusicConduct.Models;
 
 namespace MusicConduct.Events
 {
@@ -33,6 +34,37 @@ namespace MusicConduct.Events
             public string Title;
             public string Artist;
             public string Album;
+        }
+        #endregion
+    }
+
+    public class RuleEvents
+    {
+        #region CancelRuleCreationEvent
+        public event EventHandler<CancelRuleCreationEventArgs> CancelRuleCreation;
+
+        public virtual void OnCancelRuleCreation(CancelRuleCreationEventArgs e)
+        {
+            EventHandler<CancelRuleCreationEventArgs> handler = CancelRuleCreation;
+            handler?.Invoke(this, e);
+        }
+
+        public class CancelRuleCreationEventArgs : EventArgs
+        {}
+        #endregion
+
+        #region RuleCreationEvent
+        public event EventHandler<RuleCreationEventArgs> RuleCreation;
+
+        public virtual void OnRuleCreation(RuleCreationEventArgs e)
+        {
+            EventHandler<RuleCreationEventArgs> handler = RuleCreation;
+            handler?.Invoke(this, e);
+        }
+
+        public class RuleCreationEventArgs : EventArgs
+        {
+            public Rule NewRule;
         }
         #endregion
     }

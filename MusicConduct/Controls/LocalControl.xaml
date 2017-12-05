@@ -16,7 +16,7 @@
                     <TransformGroup>
                         <ScaleTransform/>
                         <SkewTransform/>
-                        <RotateTransform Angle="180"/>
+                        <RotateTransform Angle="0"/>
                         <TranslateTransform/>
                     </TransformGroup>
                 </Image.RenderTransform>
@@ -43,7 +43,7 @@
                 <Label x:Name="EndTimeLabel" Content="00:00" Margin="0" VerticalAlignment="Top" Foreground="White" Padding="0" HorizontalAlignment="Right" FontFamily="Leelawadee" FontSize="14" FontStretch="Condensed"/>
             </Grid>
             </Grid>
-            <Controls:RulesControl Margin="10,120,10,10"/>
+            <Controls:RulesControl x:Name="RulesControl" Margin="10,120,10,10"/>
         </Grid>
     </Grid>
 </UserControl>

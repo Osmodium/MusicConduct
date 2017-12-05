@@ -19,23 +19,23 @@ namespace MusicConduct.Controls
         private LoaderMessageControl()
         {
             InitializeComponent();
-            m_ColorHexes.Add("#33FF0000");
-            m_ColorHexes.Add("#33FFFF00");
-            m_ColorHexes.Add("#3300FF00");
-            m_ColorHexes.Add("#3300FFFF");
-            m_ColorHexes.Add("#330000FF");
-            m_ColorHexes.Add("#33FF00FF");
+            m_ColorHexes.Add("#CCFF0000");
+            m_ColorHexes.Add("#CCFFFF00");
+            m_ColorHexes.Add("#CC00FF00");
+            m_ColorHexes.Add("#CC00FFFF");
+            m_ColorHexes.Add("#CC0000FF");
+            m_ColorHexes.Add("#CCFF00FF");
 
             RegisterName("AnimationColorBrush", m_AnimationColorBrush);
 
-            LoaderImageTint.Fill = m_AnimationColorBrush;
+            ProgressRing.Foreground = m_AnimationColorBrush;
 
-            LerpTingColor();
+            LerpTintColor();
         }
 
-        private void LerpTingColor()
+        private void LerpTintColor()
         {
-            Color fromColor = ((SolidColorBrush)LoaderImageTint.Fill).Color;
+            Color fromColor = ((SolidColorBrush)ProgressRing.Foreground).Color;
             
             m_AnimationColorBrush.Color = fromColor;
             
@@ -48,7 +48,7 @@ namespace MusicConduct.Controls
             colorAnimation.Completed += (o, args) =>
             {
                 m_CurrentTargetColorHexIndex = (m_CurrentTargetColorHexIndex + 1) % m_ColorHexes.Count;
-                LerpTingColor();
+                LerpTintColor();
             };
 
             Storyboard.SetTargetName(colorAnimation, "AnimationColorBrush");
@@ -98,7 +98,7 @@ namespace MusicConduct.Controls
 
         public void Dispose()
         {
-
+            
         }
     }
 }

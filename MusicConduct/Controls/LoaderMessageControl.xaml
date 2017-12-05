@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MusicConduct.Controls"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Foreground="White">
     <UserControl.Resources>
@@ -15,14 +16,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="MainGrid" Background="#BF000000">
-        <TextBlock x:Name="MessageTextBlock" TextWrapping="WrapWithOverflow" Foreground="White" Margin="0,107,0,170" FontFamily="Leelawadee" FontSize="20" VerticalAlignment="Center" Text="Test" HorizontalAlignment="Center"/>
+        <TextBlock x:Name="MessageTextBlock" TextWrapping="WrapWithOverflow" Foreground="White" Margin="0,90,0,186" FontFamily="Leelawadee" FontSize="20" VerticalAlignment="Center" Text="Test" TextAlignment="Center"/>
         <Grid x:Name="LoaderGrid" VerticalAlignment="Center" Margin="0">
-            <Image x:Name="LoaderImage" gif:ImageBehavior.AnimatedSource="../Resources/Images/ajax-loader.gif" gif:ImageBehavior.RepeatBehavior="Forever" Stretch="None" Margin="0,10,0,10" VerticalAlignment="Center" Grid.ColumnSpan="2" Width="220"/>
-            <Rectangle x:Name="LoaderImageTint" Width="{Binding ActualWidth, ElementName=LoaderImage, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=LoaderImage, Mode=OneWay}" Fill="#33FF0000">
-                <Rectangle.OpacityMask>
-                    <ImageBrush ImageSource="{Binding Source, ElementName=LoaderImage}"/>
-                </Rectangle.OpacityMask>
-            </Rectangle>
+            <controls:ProgressRing x:Name="ProgressRing" Height="60" Width="60" Foreground="#CCFF00FF" />
         </Grid>
         <Grid x:Name="ControlGrid" VerticalAlignment="Bottom">
             <Label x:Name="ButtonLeft" Content="Test" Foreground="White" FontFamily="Leelawadee" Cursor="Hand" BorderBrush="{Binding Mode=OneWay, Source={StaticResource LabelButtonBorderStyle}}" Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="20"/>

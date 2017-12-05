@@ -8,8 +8,8 @@
     <Setting Name="SkipRepeatingSongs" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="RepeatingSongsTimespan" Type="System.TimeSpan" Scope="User">
-      <Value Profile="(Default)">00:00:00</Value>
+    <Setting Name="RepeatingSongsTimespan" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="Rules" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

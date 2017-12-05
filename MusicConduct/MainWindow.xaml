@@ -13,9 +13,7 @@
                 <MenuItem Click="Menu_Show">
                     <MenuItem.Header>
                         <TextBlock>
-                            <Run FontWeight="Bold">
-                                Show
-                                </Run>
+                            <Run FontWeight="Bold">Show</Run>
                         </TextBlock>
                     </MenuItem.Header>
                 </MenuItem>
