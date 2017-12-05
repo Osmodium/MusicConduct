@@ -7,6 +7,13 @@
              xmlns:Properties="clr-namespace:MusicConduct.Properties" 
              xmlns:Controls="clr-namespace:MusicConduct.Controls" x:Name="userControl" x:Class="MusicConduct.Controls.LocalControl"
              mc:Ignorable="d" Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}" Width="420" Foreground="White" Background="Black">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid x:Name="MainGrid" Background="White">
         <Image x:Name="AlbumImage" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Stretch="UniformToFill" Source="/MusicConduct;component/Resources/Images/placeholder.png"/>
         <Grid x:Name="ControlGrid" VerticalAlignment="Bottom" Height="120" Margin="0" Background="#BF000000">
@@ -39,7 +46,7 @@
             </Image>
             <Grid x:Name="TrackProgressGrid" VerticalAlignment="Top" Margin="10,93,80,0">
                 <Label x:Name="CurrentTimeLabel" Content="00:00" Margin="0" VerticalAlignment="Top" Foreground="White" Padding="0" HorizontalAlignment="Left" FontFamily="Leelawadee" FontSize="14" FontStretch="Condensed"/>
-                <ProgressBar x:Name="TimeProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="6" Margin="35,6,35,0" VerticalAlignment="Top" Foreground="#FF64FF64" BorderBrush="{x:Null}" Background="#FF646464" />
+                <ProgressBar x:Name="TimeProgressBar" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Height="6" Margin="35,6,35,0" VerticalAlignment="Top" Foreground="#FF64FF64" BorderBrush="{x:Null}" Background="#FF646464" Style="{Binding Mode=OneWay, Source={StaticResource HorizontalScrollBar}}" />
                 <Label x:Name="EndTimeLabel" Content="00:00" Margin="0" VerticalAlignment="Top" Foreground="White" Padding="0" HorizontalAlignment="Right" FontFamily="Leelawadee" FontSize="14" FontStretch="Condensed"/>
             </Grid>
             </Grid>

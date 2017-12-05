@@ -85,7 +85,7 @@ namespace MusicConduct.Controls
 
         private static void CheckBoxCheckChanged(object sender, RoutedEventArgs e)
         {
-            CheckBox currentCheckBox = (CheckBox) sender;
+            CheckBox currentCheckBox = (CheckBox)sender;
             if (currentCheckBox.IsChecked.HasValue)
                 ((Rule)currentCheckBox.DataContext).IsActive = currentCheckBox.IsChecked.Value;
         }
@@ -161,11 +161,10 @@ namespace MusicConduct.Controls
 
         private void DisableNewRule()
         {
-            ToggleRulesListColumn(RulesGrid.ActualWidth, 0);
-            NewRuleControl.IsEnabled = false;
+            ToggleRulesListColumn(RulesGrid.ActualWidth, 0, () => { NewRuleControl.IsEnabled = false; });
         }
 
-        private void ToggleRulesListColumn(double from, double to)
+        private void ToggleRulesListColumn(double from, double to, Action onCompleted = null)
         {
             GridLengthAnimation animationTimeline = new GridLengthAnimation
             {
@@ -173,6 +172,11 @@ namespace MusicConduct.Controls
                 To = new GridLength(to),
                 Duration = TimeSpan.FromMilliseconds(250)
             };
+            if (onCompleted != null)
+                animationTimeline.Completed += delegate
+                {
+                    onCompleted();
+                };
             RuleColumn.BeginAnimation(ColumnDefinition.WidthProperty, animationTimeline);
         }
 

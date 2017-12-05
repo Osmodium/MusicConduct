@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("MusicConduct")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("SchubIT")]
 [assembly: AssemblyProduct("MusicConduct")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © Christian Schubert 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -18,10 +18,12 @@
             <RowDefinition x:Name="Top" Height="61*"/>
             <RowDefinition x:Name="Mid" Height="89*"/>
         </Grid.RowDefinitions>
-        <CheckBox Grid.Row="0" x:Name="SkipExplicitSongsCheckBox" Content="Skip explicit songs" Margin="10,10,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True"/>
-        <CheckBox Grid.Row="0" x:Name="SkipRepeatedSongsCheckBox" Content="{Binding Value, ElementName=RepeatedSongTimeSlider}" ContentStringFormat="Skip repeating songs ({0} hours)" Margin="10,47,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}"/>
-        <Slider Grid.Row="0" x:Name="RepeatedSongTimeSlider" Margin="10,84,10,0" VerticalAlignment="Top" Height="28" Maximum="24" SmallChange="0.5" TickPlacement="BottomRight" LargeChange="3" TickFrequency="0.5" IsEnabled="{Binding IsChecked, ElementName=checkBox}" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" AutoToolTipPrecision="1" Minimum="0.5" Style="{Binding Mode=OneWay, Source={StaticResource Horizontal_Slider}}"/>
-        <Border Grid.Row="1" Margin="10" BorderBrush="#FFC8C8C8" BorderThickness="1" CornerRadius="5">
+        <CheckBox Grid.Row="0" x:Name="SkipExplicitSongsCheckBox" Content="Skip explicit songs" Margin="10,10,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" IsChecked="True"/>
+        <CheckBox Grid.Row="0" x:Name="SkipRepeatedSongsCheckBox" Margin="10,47,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" IsEnabled="False">
+            <TextBlock Text="{Binding Value, ElementName=RepeatedSongTimeSlider, StringFormat='Skip repeating songs ({0} hours)'}"/>
+        </CheckBox>
+        <Slider Grid.Row="0" x:Name="RepeatedSongTimeSlider" Margin="10,88,10,0" VerticalAlignment="Top" Maximum="24" SmallChange="0.5" LargeChange="3" TickFrequency="0.5" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" AutoToolTipPrecision="1" Minimum="0.5"/>
+            <Border Grid.Row="1" Margin="10" BorderBrush="#FFC8C8C8" BorderThickness="1" CornerRadius="5">
             <Grid x:Name="RulesGrid" Background="#33000000" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="RulesListColumn" Width="*"></ColumnDefinition>

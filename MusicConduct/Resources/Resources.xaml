@@ -180,6 +180,9 @@
 
     <!-- Slider styles -->
 
+    <SolidColorBrush x:Key="SliderDisabledBackgroundBrush" Color="#888888" />
+    <SolidColorBrush x:Key="SliderDisabledBorderBrush" Color="#889999" />
+
     <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -192,6 +195,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Value="{StaticResource SliderDisabledBackgroundBrush}" Property="Background" />
+                <Setter Value="{StaticResource SliderDisabledBorderBrush}" Property="BorderBrush" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
@@ -204,6 +213,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Value="{StaticResource SliderDisabledBackgroundBrush}" Property="Background" />
+                <Setter Value="{StaticResource SliderDisabledBorderBrush}" Property="BorderBrush" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="SliderThumb" TargetType="Thumb">
@@ -248,6 +263,10 @@
                 <Setter Property="MinHeight" Value="21" />
                 <Setter Property="MinWidth" Value="104" />
                 <Setter Property="Template" Value="{StaticResource Slider}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Value="{StaticResource SliderDisabledBackgroundBrush}" Property="Background" />
+                <Setter Value="{StaticResource SliderDisabledBorderBrush}" Property="BorderBrush" />
             </Trigger>
         </Style.Triggers>
     </Style>
