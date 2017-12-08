@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MusicConduct"
         xmlns:controls="clr-namespace:MusicConduct.Controls"
         mc:Ignorable="d"
-        Title="Music Conduct" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicConduct_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="Music Conduct©" Height="440" Width="420" Background="Black" Foreground="White" Closing="MusicConduct_Closing" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
         <ResourceDictionary>
             <ContextMenu x:Key="NotifierContextMenu" Placement="MousePoint">
@@ -31,19 +31,19 @@
         <Border Background="#FF3BABE3" DockPanel.Dock="Top" Height="20" x:Name="TitleBarBorder">
             <Grid>
                 <DockPanel>
-                    <TextBlock x:Name="TitleBar" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor ,AncestorType=Window}, FallbackValue=Title}" Margin="10,3,36,3" VerticalAlignment="Center" FontFamily="Leelawadee">
+                    <TextBlock x:Name="TitleBar" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor ,AncestorType=Window}, FallbackValue=Title}" Margin="10,3,36,3" VerticalAlignment="Center" FontFamily="Consolas">
                         <TextBlock.Effect>
                             <DropShadowEffect Color="Black" ShadowDepth="1"/>
                         </TextBlock.Effect>
                     </TextBlock>
-                    <Label x:Name="MinimizeLinkLabel" HorizontalAlignment="Right" Foreground="White" VerticalAlignment="Center" FontFamily="Leelawadee" Content="_" Padding="2,0" Margin="0,0,5,0" FontSize="16" DockPanel.Dock="Right" Cursor="Hand">
+                    <Label x:Name="MinimizeLinkLabel" HorizontalAlignment="Right" Foreground="Black" VerticalAlignment="Bottom" FontFamily="Britannic Bold" Content="_" Padding="2,0" Margin="0,0,5,2" FontSize="16" DockPanel.Dock="Right" Cursor="Hand">
                         <Label.Effect>
-                            <DropShadowEffect Color="Black" ShadowDepth="1"/>
+                            <DropShadowEffect Color="White" ShadowDepth="1"/>
                         </Label.Effect>
                     </Label>
-                    <Label x:Name="AboutLinkLabel" HorizontalAlignment="Right" Foreground="White" VerticalAlignment="Center" FontFamily="Leelawadee" Content="?" Padding="2,0" Margin="0,0,5,0" FontSize="16" DockPanel.Dock="Right" Cursor="Hand">
+                    <Label x:Name="AboutLinkLabel" HorizontalAlignment="Right" Foreground="Black" VerticalAlignment="Center" FontFamily="Leelawadee UI" Content="?" Padding="2,0" Margin="0,0,5,0" FontSize="16" DockPanel.Dock="Right" Cursor="Hand" FontWeight="Bold">
                         <Label.Effect>
-                            <DropShadowEffect Color="Black" ShadowDepth="1"/>
+                            <DropShadowEffect Color="White" ShadowDepth="1"/>
                         </Label.Effect>
                     </Label>
                 </DockPanel>

@@ -3,9 +3,18 @@ using MusicConduct.Models;
 
 namespace MusicConduct.Events
 {
+    /// <summary>
+    /// Gathered all events here since I always feel like they are messing up the overview of a class.
+    /// Also from here they are not class specific if we ever need to hook the same event up to a new class.
+    /// </summary>
     public class SpotifyLocalEvents
     {
         #region ConnectionChangeEvent
+        public class ConnectedChangeEventArgs : EventArgs
+        {
+            public bool IsConnected;
+        }
+
         public event EventHandler<ConnectedChangeEventArgs> ConnectionChanged;
 
         public virtual void OnConnectionChange(ConnectedChangeEventArgs e)
@@ -13,14 +22,16 @@ namespace MusicConduct.Events
             EventHandler<ConnectedChangeEventArgs> handler = ConnectionChanged;
             handler?.Invoke(this, e);
         }
-
-        public class ConnectedChangeEventArgs : EventArgs
-        {
-            public bool IsConnected;
-        }
         #endregion
 
         #region TrackChangeEvent
+        public class TrackChangeEventArgs : EventArgs
+        {
+            public string Title;
+            public string Artist;
+            public string Album;
+        }
+
         public event EventHandler<TrackChangeEventArgs> TrackChanged;
 
         public virtual void OnTrackChange(TrackChangeEventArgs e)
@@ -28,19 +39,14 @@ namespace MusicConduct.Events
             EventHandler<TrackChangeEventArgs> handler = TrackChanged;
             handler?.Invoke(this, e);
         }
-
-        public class TrackChangeEventArgs : EventArgs
-        {
-            public string Title;
-            public string Artist;
-            public string Album;
-        }
         #endregion
     }
 
     public class RuleEvents
     {
         #region CancelRuleCreationEvent
+        public class CancelRuleCreationEventArgs : EventArgs { }
+
         public event EventHandler<CancelRuleCreationEventArgs> CancelRuleCreation;
 
         public virtual void OnCancelRuleCreation(CancelRuleCreationEventArgs e)
@@ -48,23 +54,20 @@ namespace MusicConduct.Events
             EventHandler<CancelRuleCreationEventArgs> handler = CancelRuleCreation;
             handler?.Invoke(this, e);
         }
-
-        public class CancelRuleCreationEventArgs : EventArgs
-        {}
         #endregion
 
         #region RuleCreationEvent
+        public class RuleCreationEventArgs : EventArgs
+        {
+            public Rule NewRule;
+        }
+
         public event EventHandler<RuleCreationEventArgs> RuleCreation;
 
         public virtual void OnRuleCreation(RuleCreationEventArgs e)
         {
             EventHandler<RuleCreationEventArgs> handler = RuleCreation;
             handler?.Invoke(this, e);
-        }
-
-        public class RuleCreationEventArgs : EventArgs
-        {
-            public Rule NewRule;
         }
         #endregion
     }

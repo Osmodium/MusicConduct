@@ -114,22 +114,23 @@ namespace MusicConduct.Controls
 
         private static bool Compare(string value, Rule rule)
         {
+            string ruleValue = rule.Value;
             if (rule.IgnoreCase)
             {
                 value = value.ToLowerInvariant();
-                rule.Value = rule.Value.ToLowerInvariant();
+                ruleValue = rule.Value.ToLowerInvariant();
             }
 
             switch (rule.Comparison)
             {
                 case ComparisonType.Equals:
-                return value.Equals(rule.Value);
+                return value.Equals(ruleValue);
                 case ComparisonType.Contains:
-                return value.Contains(rule.Value);
+                return value.Contains(ruleValue);
                 case ComparisonType.StartsWith:
-                return value.StartsWith(rule.Value);
+                return value.StartsWith(ruleValue);
                 case ComparisonType.EndsWith:
-                return value.EndsWith(rule.Value);
+                return value.EndsWith(ruleValue);
                 default:
                 return false;
             }

@@ -19,24 +19,28 @@
                 <GradientStop Color="#FF00788C" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Grid Margin="0,0,0,80">
-            <TextBlock TextWrapping="WrapWithOverflow" FontFamily="Leelawadee UI" Foreground="White" Margin="10" FontSize="16">
-                <TextBlock.Effect>
-                    <DropShadowEffect ShadowDepth="1" BlurRadius="8" />
-                </TextBlock.Effect>
-                Music Conductor© is a small app that lets you set up rules for the music which is being played on your compuer. <LineBreak/><LineBreak/>
+        <Grid x:Name="CloseAboutGrid">
+            <Grid Margin="0,0,0,80">
+                <TextBlock TextWrapping="WrapWithOverflow" FontFamily="Leelawadee UI" Foreground="White" Margin="10" FontSize="16">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="8" />
+                    </TextBlock.Effect>
+                Music Conduct© is a small app that lets you set up rules for the music which is being played on your compuer. <LineBreak/><LineBreak/>
                 It automatically hooks into Spotify™ and makes sure that the rules defined are being enforced. <LineBreak/>
-                In the rules area it is also possible to specify if you don't want to listen to tracks with explicit content and even make Music Conductor© remember tracks up to 24 hours ago and skip any that is being played again.<LineBreak/><LineBreak/>
+                In the rules area it is also possible to specify if you don't want to listen to tracks with explicit content and even make Music Conduct© remember tracks up to 24 hours ago and skip any that is being played again.<LineBreak/><LineBreak/>
                 Note that all rules defined OR rules, which means that for a track to be played it needs to pass all the rules. If a track doesn't fulfill all the rules requrements, it will be skipped!
-            </TextBlock>
-        </Grid>
-        <Grid VerticalAlignment="Bottom" Margin="0,0,0,10">
-            <TextBlock TextWrapping="WrapWithOverflow" Width="261" FontFamily="Leelawadee UI" Foreground="White" Margin="10,0,150,0" FontSize="16">
-                <TextBlock.Effect>
-                    <DropShadowEffect ShadowDepth="1" BlurRadius="8" />
-                </TextBlock.Effect>
+                </TextBlock>
+            </Grid>
+            <Grid VerticalAlignment="Bottom" Margin="0,0,0,10">
+                <TextBlock TextWrapping="WrapWithOverflow" Width="261" FontFamily="Leelawadee UI" Foreground="White" Margin="10,0,150,0" FontSize="16">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="8" />
+                    </TextBlock.Effect>
                 Reach me on twitter or on github.<LineBreak/>Peace!<LineBreak/>- Christian Schubert
-            </TextBlock>
+                </TextBlock>
+            </Grid>
+        </Grid>
+        <Grid VerticalAlignment="Bottom" Margin="0,0,0,10" HorizontalAlignment="Right">
             <Grid x:Name="FacebookGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,0">
                 <Image x:Name="GithubImage" Source="/MusicConduct;component/Resources/Images/github.png" Width="64" Height="64" />
                 <Image x:Name="GithubBwImage" Source="/MusicConduct;component/Resources/Images/githubBW.png" Width="64" Height="64" Opacity="1" Panel.ZIndex="1" Cursor="Hand" />
@@ -46,6 +50,6 @@
                 <Image x:Name="TwitterBwImage" Source="/MusicConduct;component/Resources/Images/twitterBW.png" Width="64" Height="64" Opacity="1" Panel.ZIndex="1" Cursor="Hand" />
             </Grid>
         </Grid>
-        <Label x:Name="CloseAboutLabel" Content="X" Margin="0,10,10,0" VerticalAlignment="Top" Foreground="Black" Padding="0" FontFamily="Leelawadee UI" FontSize="16" Cursor="Hand" HorizontalAlignment="Right" FontWeight="Bold"/>
+        <!--<Label x:Name="CloseAboutLabel" Content="X" Margin="0,10,10,0" VerticalAlignment="Top" Foreground="Black" Padding="0" FontFamily="Leelawadee UI" FontSize="16" Cursor="Hand" HorizontalAlignment="Right" FontWeight="Bold"/>-->
     </Grid>
 </UserControl>

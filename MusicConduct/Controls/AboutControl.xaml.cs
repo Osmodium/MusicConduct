@@ -23,24 +23,12 @@ namespace MusicConduct.Controls
             TwitterBwImage.MouseLeave += BwImageOnMouseLeave;
             TwitterBwImage.MouseUp += TwitterBwImageOnMouseUp;
 
-            CloseAboutLabel.MouseEnter += CloseAboutLabelOnMouseEnter ;
-            CloseAboutLabel.MouseLeave += CloseAboutLabelOnMouseLeave;
-            CloseAboutLabel.MouseUp += CloseAboutLabelOnMouseUp;
+            CloseAboutGrid.MouseUp += CloseAboutGridOnMouseUp;
         }
 
-        private void CloseAboutLabelOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void CloseAboutGridOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             CloseAbout?.Invoke(this);
-        }
-
-        private void CloseAboutLabelOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
-        {
-            CloseAboutLabel.Foreground = Constants.LinkLabelForegroundHighlight;
-        }
-
-        private void CloseAboutLabelOnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
-        {
-            CloseAboutLabel.Foreground = Constants.LinkLabelForegroundBlack;
         }
 
         private static void GithubBwImageOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)

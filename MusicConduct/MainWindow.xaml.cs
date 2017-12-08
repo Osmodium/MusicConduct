@@ -14,7 +14,7 @@ namespace MusicConduct
 {
     public partial class MainWindow
     {
-        private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         private readonly Brush m_LinkLabelForegroundHighlight = new SolidColorBrush(Color.FromRgb(35, 255, 200));
         private AboutControl m_AboutControl;
         private NotifyIcon m_NotifyIcon;
@@ -46,7 +46,7 @@ namespace MusicConduct
                     text = text.Substring(0, 60) + "...";
                 m_NotifyIcon.Text = text;
             }, TimeSpan.FromMilliseconds(1000), 10);
-            
+
         }
 
         private void InitializeNotificationIcon()
@@ -62,7 +62,7 @@ namespace MusicConduct
             };
             m_NotifyIcon.MouseDown += (sender, args) =>
             {
-                if (args.Button != MouseButtons.Right) 
+                if (args.Button != MouseButtons.Right)
                     return;
                 System.Windows.Controls.ContextMenu menu = (System.Windows.Controls.ContextMenu)FindResource("NotifierContextMenu");
                 menu.IsOpen = true;
@@ -104,11 +104,11 @@ namespace MusicConduct
             Show();
             WindowState = WindowState.Normal;
             Activate();
-            Topmost = true;  
-            Topmost = false; 
-            Focus();         
+            Topmost = true;
+            Topmost = false;
+            Focus();
         }
-        
+
         private void AboutLinkLabelOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (m_AboutControl == null)
