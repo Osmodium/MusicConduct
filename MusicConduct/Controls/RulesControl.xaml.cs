@@ -35,9 +35,20 @@ namespace MusicConduct.Controls
             SkipExplicitSongsCheckBox.IsChecked = Settings.Default.SkipExplicitSongs;
             SkipRepeatedSongsCheckBox.IsChecked = Settings.Default.SkipRepeatingSongs;
             RepeatedSongTimeSlider.Value = Settings.Default.RepeatingSongsTimespan;
+            EnableRulesCheckBox.IsChecked = Settings.Default.EnableRules;
 
             NewRuleControl.RuleEvents.RuleCreation += RulesControl_RuleCreation;
             NewRuleControl.RuleEvents.CancelRuleCreation += RuleEventsOnCancelRuleCreation;
+
+            EnableRulesCheckBox.Checked += EnableRulesCheckBox_CheckedChanged;
+            EnableRulesCheckBox.Unchecked += EnableRulesCheckBox_CheckedChanged;
+
+            ToggleRulesGrid();
+        }
+
+        private void EnableRulesCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            ToggleRulesGrid();
         }
 
         private void RuleEventsOnCancelRuleCreation(object sender, RuleEvents.CancelRuleCreationEventArgs e)
@@ -50,6 +61,11 @@ namespace MusicConduct.Controls
             m_Rules.Add(e.NewRule);
             AddRuleCheckbox(e.NewRule);
             DisableNewRule();
+        }
+
+        private void ToggleRulesGrid()
+        {
+            RulesGrid.IsEnabled = EnableRulesCheckBox.IsChecked.HasValue && EnableRulesCheckBox.IsChecked.Value;
         }
 
         private void PopulateRulesCheckboxes()
@@ -89,9 +105,12 @@ namespace MusicConduct.Controls
             if (currentCheckBox.IsChecked.HasValue)
                 ((Rule)currentCheckBox.DataContext).IsActive = currentCheckBox.IsChecked.Value;
         }
+
         public bool ShouldSkipTrack(Track track)
         {
-            return m_Rules.Any(rule => TestTrack(track, rule));
+            if (EnableRulesCheckBox.IsChecked.HasValue && EnableRulesCheckBox.IsChecked.Value)
+                return m_Rules.Any(rule => TestTrack(track, rule));
+            return false;
         }
 
         private static bool TestTrack(Track track, Rule rule)
@@ -188,6 +207,8 @@ namespace MusicConduct.Controls
                 Settings.Default.SkipExplicitSongs = SkipExplicitSongsCheckBox.IsChecked.Value;
             if (SkipRepeatedSongsCheckBox.IsChecked.HasValue)
                 Settings.Default.SkipRepeatingSongs = SkipRepeatedSongsCheckBox.IsChecked.Value;
+            if (EnableRulesCheckBox.IsChecked.HasValue)
+                Settings.Default.EnableRules = EnableRulesCheckBox.IsChecked.Value;
 
             Settings.Default.Rules = JsonConvert.SerializeObject(m_Rules);
 

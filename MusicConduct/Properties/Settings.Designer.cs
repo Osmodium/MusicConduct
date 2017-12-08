@@ -70,5 +70,17 @@ namespace MusicConduct.Properties {
                 this["Rules"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnableRules {
+            get {
+                return ((bool)(this["EnableRules"]));
+            }
+            set {
+                this["EnableRules"] = value;
+            }
+        }
     }
 }

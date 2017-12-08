@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using MusicConduct.Controls;
 using MusicConduct.Events;
 using MusicConduct.Utility;
@@ -14,8 +13,6 @@ namespace MusicConduct
 {
     public partial class MainWindow
     {
-        private readonly Brush m_LinkLabelForegroundDefault = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-        private readonly Brush m_LinkLabelForegroundHighlight = new SolidColorBrush(Color.FromRgb(35, 255, 200));
         private AboutControl m_AboutControl;
         private NotifyIcon m_NotifyIcon;
 
@@ -31,6 +28,10 @@ namespace MusicConduct
             MinimizeLinkLabel.MouseEnter += LinkLabel_MouseEnter;
             MinimizeLinkLabel.MouseLeave += LinkLabel_MouseLeave;
             MinimizeLinkLabel.MouseUp += MinimizeLinkLabelOnMouseUp;
+
+            //FoldupLinkLabel.MouseEnter += LinkLabel_MouseEnter;
+            //FoldupLinkLabel.MouseLeave += LinkLabel_MouseLeave;
+            //FoldupLinkLabel.MouseUp += FoldupLinkLabelOnMouseUp;
 
             TitleBarMover.MouseDown += TitleBarDockOnMouseDown;
 
@@ -89,6 +90,13 @@ namespace MusicConduct
             WindowState = WindowState.Minimized;
         }
 
+        //private void FoldupLinkLabelOnMouseUp(object sender, MouseButtonEventArgs e)
+        //{
+        //    double to = Math.Abs(MusicConduct.ActualHeight - 125) < 0.1f ? 440 : 125;
+        //    DoubleAnimation animation = new DoubleAnimation(to, TimeSpan.FromMilliseconds(250));
+        //    MusicConduct.BeginAnimation(HeightProperty, animation);
+        //}
+
         private void Menu_Show(object sender, RoutedEventArgs e)
         {
             ShowApp();
@@ -113,7 +121,7 @@ namespace MusicConduct
         {
             if (m_AboutControl == null)
             {
-                m_AboutControl = new AboutControl();
+                m_AboutControl = new AboutControl(LocalSpotifyControl.SpotifyClientVersion);
                 ContentGrid.Children.Add(m_AboutControl);
                 m_AboutControl.CloseAbout += AboutControl_CloseAbout;
             }
@@ -138,13 +146,13 @@ namespace MusicConduct
         private void LinkLabel_MouseEnter(object sender, MouseEventArgs e)
         {
             Label linkLabel = (Label)sender;
-            linkLabel.Foreground = m_LinkLabelForegroundHighlight;
+            linkLabel.Foreground = Constants.LinkLabelForegroundHighlight;
         }
 
         private void LinkLabel_MouseLeave(object sender, MouseEventArgs e)
         {
             Label linkLabel = (Label)sender;
-            linkLabel.Foreground = m_LinkLabelForegroundDefault;
+            linkLabel.Foreground = Constants.LinkLabelForegroundBlack;
         }
 
         private void MusicConduct_Closing(object sender, CancelEventArgs e)

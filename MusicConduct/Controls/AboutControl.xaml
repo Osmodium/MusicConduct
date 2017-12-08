@@ -30,6 +30,11 @@
                 In the rules area it is also possible to specify if you don't want to listen to tracks with explicit content and even make Music Conduct© remember tracks up to 24 hours ago and skip any that is being played again.<LineBreak/><LineBreak/>
                 Note that all rules defined OR rules, which means that for a track to be played it needs to pass all the rules. If a track doesn't fulfill all the rules requrements, it will be skipped!
                 </TextBlock>
+                <TextBlock x:Name="ClientVersionText" FontFamily="Leelawadee UI" Foreground="#FF96FFB4" Margin="5" FontSize="14" VerticalAlignment="Bottom" TextAlignment="Center">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="8" />
+                    </TextBlock.Effect>
+                </TextBlock>
             </Grid>
             <Grid VerticalAlignment="Bottom" Margin="0,0,0,10">
                 <TextBlock TextWrapping="WrapWithOverflow" Width="261" FontFamily="Leelawadee UI" Foreground="White" Margin="10,0,150,0" FontSize="16">

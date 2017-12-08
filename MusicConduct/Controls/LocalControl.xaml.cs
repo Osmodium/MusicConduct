@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +18,6 @@ using SpotifyAPI.Local.Models;
 
 namespace MusicConduct.Controls
 {
-    
     public partial class LocalControl : IDisposable
     {
         private readonly SpotifyLocalAPI m_Spotify;
@@ -26,9 +26,16 @@ namespace MusicConduct.Controls
         private bool m_IsPlaying;
         private BackgroundWorker m_ConnectBackgroundWorker;
         private LoaderMessageControl m_LoaderMessageControl;
-        
-        public SpotifyLocalEvents SpotifyLocalEvents { get; private set; }
-        public bool IsConnected { get; private set; }
+        private readonly double m_FadeAfterMilliseconds = 5000;
+        private readonly double m_FadeTo = 0;
+        private readonly double m_FadeTime = 1000f;
+        private DateTime m_FadeAt;
+        private readonly System.Timers.Timer m_FadeTimer;
+
+        public string SpotifyClientVersion { get; internal set; }
+
+        public SpotifyLocalEvents SpotifyLocalEvents { get; }
+        public bool IsConnected { get; set; }
 
         public LocalControl()
         {
@@ -37,7 +44,6 @@ namespace MusicConduct.Controls
             m_Spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
             m_Spotify.OnTrackChange += _spotify_OnTrackChange;
             m_Spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
-            //m_Spotify.OnVolumeChange += _spotify_OnVolumeChange;
 
             SpotifyLocalEvents = new SpotifyLocalEvents();
 
@@ -53,6 +59,11 @@ namespace MusicConduct.Controls
 
             TitleLinkLabel.MouseEnter += LinkLabel_MouseEnter;
             TitleLinkLabel.MouseLeave += LinkLabel_MouseLeave;
+
+            m_FadeTimer = new System.Timers.Timer();
+            m_FadeTimer.Elapsed += FadeTimerOnElapsed;
+            m_FadeTimer.Interval = 100;
+            m_FadeTimer.Enabled = false;
             RunBackgroundWorker();
         }
 
@@ -149,6 +160,7 @@ namespace MusicConduct.Controls
             m_LoaderMessageControl.Dispose();
             MainGrid.Children.Remove(m_LoaderMessageControl);
             m_LoaderMessageControl = null;
+            FadeWithDelay();
         }
 
         private void UpdateInfos()
@@ -158,9 +170,8 @@ namespace MusicConduct.Controls
                 return;
 
             UpdatePlayingStatus(status.Playing);
-            //clientVersionLabel.Content = $"Client Version: {status.ClientVersion}";
-            //versionLabel.Content = $"Version: {status.Version}";
-            //repeatShuffleLabel.Content = (status.Repeat ? "Repeat" : "") + " " +  (status.Shuffle ? "Shuffle" : "");
+
+            SpotifyClientVersion = $"{status.ClientVersion} ({status.Version})";
 
             if (status.Track != null) //Update track infos
                 UpdateTrack(status.Track);
@@ -226,16 +237,6 @@ namespace MusicConduct.Controls
             PlayPauseImage.Source = new BitmapImage(imageUri);
         }
 
-        //private void _spotify_OnVolumeChange(object sender, VolumeChangeEventArgs e)
-        //{
-        //    if (!CheckAccess())
-        //    {
-        //        Dispatcher.Invoke(() => _spotify_OnVolumeChange(sender, e));
-        //        return;
-        //    }
-        //    volumeLabel.Content = (e.NewVolume * 100).ToString(CultureInfo.InvariantCulture);
-        //}
-
         private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
         {
             if (!CheckAccess())
@@ -273,31 +274,6 @@ namespace MusicConduct.Controls
             UpdatePlayingStatus(e.Playing);
         }
 
-        //private async void playUrlBtn_Click(object sender, EventArgs e)
-        //{
-        //    await _spotify.PlayURL(playTextBox.Text, contextTextBox.Text);
-        //}
-
-        //private async void playBtn_Click(object sender, EventArgs e)
-        //{
-        //    await _spotify.Play();
-        //}
-
-        //private async void pauseBtn_Click(object sender, EventArgs e)
-        //{
-        //    await _spotify.Pause();
-        //}
-
-        //private void prevBtn_Click(object sender, EventArgs e)
-        //{
-        //    _spotify.Previous();
-        //}
-
-        //private void skipBtn_Click(object sender, EventArgs e)
-        //{
-        //    _spotify.Skip();
-        //}
-
         private static string FormatTime(double sec)
         {
             TimeSpan span = TimeSpan.FromSeconds(sec);
@@ -319,8 +295,6 @@ namespace MusicConduct.Controls
             linkLabel.Foreground = Constants.LinkLabelForegroundWhite;
         }
 
-        
-
         private void PlayPauseImage_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (m_IsPlaying)
@@ -331,26 +305,20 @@ namespace MusicConduct.Controls
 
         private void ExpandRetractCanvas_MouseEnter(object sender, MouseEventArgs e)
         {
-            ExpandRetractImage.Opacity = 1;
+            ExpandRetractRect.Opacity = 1;
+            ExpandRetractRect.Fill = Constants.LinkLabelForegroundHighlight;
         }
 
         private void ExpandRetractCanvas_MouseLeave(object sender, MouseEventArgs e)
         {
-            ExpandRetractImage.Opacity = 0.2;
+            ExpandRetractRect.Opacity = 0.2;
+            ExpandRetractRect.Fill = Constants.LinkLabelForegroundWhite;
         }
 
         private void ExpandRetractCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             double to = Math.Abs(ControlGrid.ActualHeight - 120) < 0.1 ? MainGrid.ActualHeight : 120;
             ExpandRetractRules(to);
-        }
-
-        private void ExpandRetractRules(double to)
-        {
-            double from = ControlGrid.ActualHeight;
-            AnimationTimeline animationTimeline = new DoubleAnimation(from, to, new Duration(TimeSpan.FromMilliseconds(250)));
-            ControlGrid.BeginAnimation(HeightProperty, animationTimeline);
-            ExpandRetractImage.RenderTransform = ControlGrid.ActualHeight < MainGrid.ActualHeight ? new RotateTransform(180) : new RotateTransform(0);
         }
 
         public void ExpandRules()
@@ -363,12 +331,57 @@ namespace MusicConduct.Controls
             ExpandRetractRules(120);
         }
 
+        private void ExpandRetractRules(double to)
+        {
+            AnimationTimeline animationTimeline = new DoubleAnimation(to, new Duration(TimeSpan.FromMilliseconds(250)));
+            ControlGrid.BeginAnimation(HeightProperty, animationTimeline);
+            ExpandRetractRect.RenderTransform = ControlGrid.ActualHeight < MainGrid.ActualHeight ? new RotateTransform(180) : new RotateTransform(0);
+        }
+
+        private void UserControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Fade(1);
+        }
+
+        private void UserControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            FadeWithDelay();
+        }
+
+        private void Fade(double to, double milliSeconds = 100)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                DoubleAnimation opacityAnimation = new DoubleAnimation(to, TimeSpan.FromMilliseconds(milliSeconds));
+                ControlGrid.BeginAnimation(OpacityProperty, opacityAnimation);
+            });
+        }
+
+        private void FadeWithDelay()
+        {
+            if (IsExpanded)
+                return;
+            m_FadeAt = DateTime.Now.AddMilliseconds(m_FadeAfterMilliseconds);
+            m_FadeTimer.Enabled = true;
+        }
+
+        private void FadeTimerOnElapsed(object o, ElapsedEventArgs elapsedEventArgs)
+        {
+            if (m_FadeAt > DateTime.Now) 
+                return;
+            if (!IsExpanded)
+                Fade(m_FadeTo, m_FadeTime);
+            m_FadeTimer.Enabled = false;
+        }
+
+        public bool IsExpanded => Math.Abs(ControlGrid.ActualHeight - MainGrid.ActualHeight) < 0.1;
+
         public void Dispose()
         {
             m_Spotify?.Dispose();
             m_AlbumBitmapStream?.Dispose();
             m_ConnectBackgroundWorker?.Dispose();
-            RulesControl.Dispose();
-        }
+            RulesControl?.Dispose();
+        }    
     }
 }

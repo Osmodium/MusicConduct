@@ -11,9 +11,12 @@ namespace MusicConduct.Controls
         public event CloseAboutHandler CloseAbout;
         public delegate void CloseAboutHandler(AboutControl aboutControl);
 
-        public AboutControl()
+        public AboutControl(string clientVersionString = null)
         {
             InitializeComponent();
+
+            if (!string.IsNullOrEmpty(clientVersionString))
+                ClientVersionText.Text = $"Spotify Client Version: {clientVersionString}";
 
             GithubBwImage.MouseEnter += BwImageOnMouseEnter;
             GithubBwImage.MouseLeave += BwImageOnMouseLeave;
