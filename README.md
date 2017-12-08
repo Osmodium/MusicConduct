@@ -10,10 +10,4 @@ So I sat down and searched the Spotify™ forums for some way to completely "blo
 After a bit of searching, I found an app for OSX, which is called Denied (https://www.getdenied.com/) who actually did this!!! But only for OSX... Thanks for nothing! (Though I did buy it for my Mac Book Pro...)
 I then decided to try my hand at creating one that takes the grest ideas from Denied and make an open source project for Windows.
 
-## Build status
-Build status of continus integration i.e. travis, appveyor etc. Ex. - 
-
-[![Build Status](https://travis-ci.org/Osmodium/MusicConduct.svg?branch=master)](https://travis-ci.org/Osmodium/MusicConduct)
-
-
 MIT © Christian Schubert
