@@ -39,17 +39,14 @@
                         <ListBox x:Name="RulesList" Margin="0" Background="Transparent" BorderBrush="Transparent" Padding="5">
                             <ListBox.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem FontFamily="Leelawadee UI" Header="New"
+                                    <MenuItem FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0,-3,0,0" Header="New"
                                           Click="AddItem"
                                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
-                                    <MenuItem FontFamily="Leelawadee UI" Header="Remove"
+                                    <MenuItem FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0,-3,0,0" Header="Remove"
                                           Click="RemoveItem"
                                           CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
                                 </ContextMenu>
                             </ListBox.ContextMenu>
-                            <!--<CheckBox Content="artist contains 'Volbeat'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True" Margin="0" UseLayoutRounding="False"/>
-                        <CheckBox Content="artist equals 'Nickleback'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" />
-                        <CheckBox Content="track contains 'live'" Style="{Binding Mode=OneWay, Source={StaticResource CheckBoxStyle}}" IsChecked="True" />-->
                         </ListBox>
                     </Grid>
                     <Grid Grid.Column="1">

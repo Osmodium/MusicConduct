@@ -10,14 +10,14 @@
     <Window.Resources>
         <ResourceDictionary>
             <ContextMenu x:Key="NotifierContextMenu" Placement="MousePoint">
-                <MenuItem Click="Menu_Show">
+                <MenuItem Click="Menu_Show" FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0">
                     <MenuItem.Header>
                         <TextBlock>
                             <Run FontWeight="Bold">Show</Run>
                         </TextBlock>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Header="Exit" Click="Menu_Exit"/>
+                <MenuItem Header="Exit" Click="Menu_Exit" FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0"/>
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Resources.xaml"/>
