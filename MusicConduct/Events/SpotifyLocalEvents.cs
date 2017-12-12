@@ -70,5 +70,17 @@ namespace MusicConduct.Events
             handler?.Invoke(this, e);
         }
         #endregion
+
+        #region RulesChanged
+        public class RulesChangedEventArgs : EventArgs { }
+
+        public event EventHandler<RulesChangedEventArgs> RulesChanged;
+
+        public virtual void OnRulesChanged(RulesChangedEventArgs e)
+        {
+            EventHandler<RulesChangedEventArgs> handler = RulesChanged;
+            handler?.Invoke(this, e);
+        }
+        #endregion
     }
 }

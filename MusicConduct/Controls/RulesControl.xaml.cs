@@ -16,8 +16,9 @@ namespace MusicConduct.Controls
     /// <summary>
     /// Interaction logic for RulesControl.xaml
     /// </summary>
-    public partial class RulesControl : UserControl, IDisposable
+    public partial class RulesControl : IDisposable
     {
+        public RuleEvents RulesEvents = new RuleEvents();
         private readonly List<Rule> m_Rules;
         public RulesControl()
         {
@@ -46,6 +47,11 @@ namespace MusicConduct.Controls
             ToggleRulesGrid();
         }
 
+        private void RulesChanged()
+        {
+            RulesEvents.OnRulesChanged(new RuleEvents.RulesChangedEventArgs());
+        }
+
         private void EnableRulesCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
             ToggleRulesGrid();
@@ -60,12 +66,14 @@ namespace MusicConduct.Controls
         {
             m_Rules.Add(e.NewRule);
             AddRuleCheckbox(e.NewRule);
+            RulesChanged();
             DisableNewRule();
         }
 
         private void ToggleRulesGrid()
         {
             RulesGrid.IsEnabled = EnableRulesCheckBox.IsChecked.HasValue && EnableRulesCheckBox.IsChecked.Value;
+            RulesChanged();
         }
 
         private void PopulateRulesCheckboxes()
@@ -99,15 +107,19 @@ namespace MusicConduct.Controls
             RulesList.Items.Add(checkBox);
         }
 
-        private static void CheckBoxCheckChanged(object sender, RoutedEventArgs e)
+        private void CheckBoxCheckChanged(object sender, RoutedEventArgs e)
         {
             CheckBox currentCheckBox = (CheckBox)sender;
-            if (currentCheckBox.IsChecked.HasValue)
-                ((Rule)currentCheckBox.DataContext).IsActive = currentCheckBox.IsChecked.Value;
+            if (!currentCheckBox.IsChecked.HasValue) return;
+            ((Rule) currentCheckBox.DataContext).IsActive = currentCheckBox.IsChecked.Value;
+            RulesChanged();
         }
 
         public bool ShouldSkipTrack(Track track)
         {
+            if (SkipExplicitSongsCheckBox.IsChecked.HasValue && SkipExplicitSongsCheckBox.IsChecked.Value)
+                if (track.TrackType.Equals("explicit", StringComparison.InvariantCultureIgnoreCase))
+                    return true;
             if (EnableRulesCheckBox.IsChecked.HasValue && EnableRulesCheckBox.IsChecked.Value)
                 return m_Rules.Any(rule => TestTrack(track, rule));
             return false;
@@ -171,6 +183,7 @@ namespace MusicConduct.Controls
             currentCheckbox.Checked -= CheckBoxCheckChanged;
             currentCheckbox.Unchecked -= CheckBoxCheckChanged;
             RulesList.Items.Remove(currentCheckbox);
+            RulesChanged();
         }
 
         private void EnableNewRule()

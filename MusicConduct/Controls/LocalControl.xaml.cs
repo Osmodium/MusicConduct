@@ -24,6 +24,7 @@ namespace MusicConduct.Controls
         private Track m_CurrentTrack;
         private MemoryStream m_AlbumBitmapStream;
         private bool m_IsPlaying;
+        private bool m_IsPlayingAd;
         private BackgroundWorker m_ConnectBackgroundWorker;
         private LoaderMessageControl m_LoaderMessageControl;
         private readonly double m_FadeAfterMilliseconds = 5000;
@@ -41,9 +42,9 @@ namespace MusicConduct.Controls
         {
             InitializeComponent();
             m_Spotify = new SpotifyLocalAPI();
-            m_Spotify.OnPlayStateChange += _spotify_OnPlayStateChange;
-            m_Spotify.OnTrackChange += _spotify_OnTrackChange;
-            m_Spotify.OnTrackTimeChange += _spotify_OnTrackTimeChange;
+            m_Spotify.OnPlayStateChange += Spotify_OnPlayStateChange;
+            m_Spotify.OnTrackChange += Spotify_OnTrackChange;
+            m_Spotify.OnTrackTimeChange += Spotify_OnTrackTimeChange;
 
             SpotifyLocalEvents = new SpotifyLocalEvents();
 
@@ -97,6 +98,8 @@ namespace MusicConduct.Controls
 
                     if (IsConnected)
                     {
+                        if (m_IsPlayingAd)
+                            UpdateTrack();
                         Thread.Sleep(10000);
                         continue;
                     }
@@ -153,6 +156,7 @@ namespace MusicConduct.Controls
             if (!IsConnected)
                 return;
             SpotifyLocalEvents.OnConnectionChange(new SpotifyLocalEvents.ConnectedChangeEventArgs { IsConnected = true });
+            RulesControl.RulesEvents.RulesChanged += (sender, args) => { SkipTrack(); };
             UpdateInfos();
             m_Spotify.ListenForEvents = true;
             if (m_LoaderMessageControl == null)
@@ -173,8 +177,33 @@ namespace MusicConduct.Controls
 
             SpotifyClientVersion = $"{status.ClientVersion} ({status.Version})";
 
-            if (status.Track != null) //Update track infos
+            if (status.Track != null)
                 UpdateTrack(status.Track);
+        }
+
+        private Track GetTrack()
+        {
+            StatusResponse status = m_Spotify.GetStatus();
+            return status.Track;
+        }
+
+        private void SkipTrack()
+        {
+            SkipTrack(GetTrack());
+        }
+
+        private void SkipTrack(Track track)
+        {
+            if (RulesControl.ShouldSkipTrack(track))
+                m_Spotify.Skip();
+        }
+
+        private void UpdateTrack()
+        {
+            StatusResponse status = m_Spotify.GetStatus();
+            if (status?.Track == null)
+                return;
+            UpdateTrack(status.Track);
         }
 
         private void UpdateTrack(Track track)
@@ -187,17 +216,13 @@ namespace MusicConduct.Controls
                 SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = "Ad" });
                 AlbumImage.Source = new BitmapImage(new Uri("/MusicConduct;component/Resources/Images/placeholder.png", UriKind.Relative));
                 TrackDetailsGrid.Visibility = Visibility.Hidden;
+                m_IsPlayingAd = true;
                 return; //Don't process further, maybe null values
             }
 
-            if (RulesControl.SkipExplicitSongsCheckBox.IsChecked.HasValue && RulesControl.SkipExplicitSongsCheckBox.IsChecked.Value)
-            {
-                if(track.TrackType.Equals("explicit", StringComparison.InvariantCultureIgnoreCase))
-                    m_Spotify.Skip();
-            }
+            m_IsPlayingAd = false;
 
-            if (RulesControl.ShouldSkipTrack(track))
-                m_Spotify.Skip();
+            SkipTrack(track);
 
             // TODO skip repeated tracks
             
@@ -237,11 +262,11 @@ namespace MusicConduct.Controls
             PlayPauseImage.Source = new BitmapImage(imageUri);
         }
 
-        private void _spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
+        private void Spotify_OnTrackTimeChange(object sender, TrackTimeChangeEventArgs e)
         {
             if (!CheckAccess())
             {
-                Dispatcher.Invoke(() => _spotify_OnTrackTimeChange(sender, e));
+                Dispatcher.Invoke(() => Spotify_OnTrackTimeChange(sender, e));
                 return;
             }
 
@@ -254,21 +279,21 @@ namespace MusicConduct.Controls
                 TimeProgressBar.Value = (int)e.TrackTime;
         }
 
-        private void _spotify_OnTrackChange(object sender, TrackChangeEventArgs e)
+        private void Spotify_OnTrackChange(object sender, TrackChangeEventArgs e)
         {
             if (!CheckAccess())
             {
-                Dispatcher.Invoke(() => _spotify_OnTrackChange(sender, e));
+                Dispatcher.Invoke(() => Spotify_OnTrackChange(sender, e));
                 return;
             }
             UpdateTrack(e.NewTrack);
         }
 
-        private void _spotify_OnPlayStateChange(object sender, PlayStateEventArgs e)
+        private void Spotify_OnPlayStateChange(object sender, PlayStateEventArgs e)
         {
             if (!CheckAccess())
             {
-                Dispatcher.Invoke(() => _spotify_OnPlayStateChange(sender, e));
+                Dispatcher.Invoke(() => Spotify_OnPlayStateChange(sender, e));
                 return;
             }
             UpdatePlayingStatus(e.Playing);

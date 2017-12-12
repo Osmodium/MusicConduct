@@ -85,6 +85,11 @@ namespace MusicConduct
 
         private void MinimizeLinkLabelOnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
+            Minimize();
+        }
+
+        private void Minimize()
+        {
             if (m_NotifyIcon == null)
                 return;
             WindowState = WindowState.Minimized;
@@ -159,6 +164,11 @@ namespace MusicConduct
         {
             LocalSpotifyControl.Dispose();
             m_NotifyIcon.Dispose();
+        }
+
+        private void Menu_Minimize(object sender, RoutedEventArgs e)
+        {
+            Minimize();
         }
     }
 }
