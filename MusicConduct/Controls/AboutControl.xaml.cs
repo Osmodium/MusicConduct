@@ -6,7 +6,7 @@ using MusicConduct.Utility;
 
 namespace MusicConduct.Controls
 {
-    public partial class AboutControl : UserControl, IDisposable
+    public partial class AboutControl : IDisposable
     {
         public event CloseAboutHandler CloseAbout;
         public delegate void CloseAboutHandler(AboutControl aboutControl);

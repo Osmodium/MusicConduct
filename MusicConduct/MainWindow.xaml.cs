@@ -29,10 +29,6 @@ namespace MusicConduct
             MinimizeLinkLabel.MouseLeave += LinkLabel_MouseLeave;
             MinimizeLinkLabel.MouseUp += MinimizeLinkLabelOnMouseUp;
 
-            //FoldupLinkLabel.MouseEnter += LinkLabel_MouseEnter;
-            //FoldupLinkLabel.MouseLeave += LinkLabel_MouseLeave;
-            //FoldupLinkLabel.MouseUp += FoldupLinkLabelOnMouseUp;
-
             TitleBarMover.MouseDown += TitleBarDockOnMouseDown;
 
             LocalSpotifyControl.SpotifyLocalEvents.TrackChanged += SpotifyLocalEventsOnTrackChanged;
@@ -95,16 +91,14 @@ namespace MusicConduct
             WindowState = WindowState.Minimized;
         }
 
-        //private void FoldupLinkLabelOnMouseUp(object sender, MouseButtonEventArgs e)
-        //{
-        //    double to = Math.Abs(MusicConduct.ActualHeight - 125) < 0.1f ? 440 : 125;
-        //    DoubleAnimation animation = new DoubleAnimation(to, TimeSpan.FromMilliseconds(250));
-        //    MusicConduct.BeginAnimation(HeightProperty, animation);
-        //}
-
         private void Menu_Show(object sender, RoutedEventArgs e)
         {
             ShowApp();
+        }
+
+        private void Menu_Minimize(object sender, RoutedEventArgs e)
+        {
+            Minimize();
         }
 
         private void Menu_Exit(object sender, RoutedEventArgs e)
@@ -148,13 +142,13 @@ namespace MusicConduct
             aboutControl.Dispose();
         }
 
-        private void LinkLabel_MouseEnter(object sender, MouseEventArgs e)
+        private static void LinkLabel_MouseEnter(object sender, MouseEventArgs e)
         {
             Label linkLabel = (Label)sender;
             linkLabel.Foreground = Constants.LinkLabelForegroundHighlight;
         }
 
-        private void LinkLabel_MouseLeave(object sender, MouseEventArgs e)
+        private static void LinkLabel_MouseLeave(object sender, MouseEventArgs e)
         {
             Label linkLabel = (Label)sender;
             linkLabel.Foreground = Constants.LinkLabelForegroundBlack;
@@ -162,13 +156,9 @@ namespace MusicConduct
 
         private void MusicConduct_Closing(object sender, CancelEventArgs e)
         {
-            LocalSpotifyControl.Dispose();
-            m_NotifyIcon.Dispose();
-        }
-
-        private void Menu_Minimize(object sender, RoutedEventArgs e)
-        {
-            Minimize();
+            LocalSpotifyControl?.Dispose();
+            m_AboutControl?.Dispose();
+            m_NotifyIcon?.Dispose();
         }
     }
 }

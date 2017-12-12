@@ -20,10 +20,7 @@ namespace MusicConduct.Controls
             RuleEvents = new RuleEvents();
         }
 
-        //public void LoadRule(Rule rule)
-        //{
-        //    // TODO if we ever want to edit rules
-        //}
+        // TODO edit exiting rules?
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {

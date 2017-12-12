@@ -80,32 +80,39 @@ namespace MusicConduct.Controls
             m_ConnectBackgroundWorker.DoWork += (sender, args) =>
             {
                 BackgroundWorker bw = (BackgroundWorker)sender;
-                while (true)
+                try
                 {
-                    if (!SpotifyLocalAPI.IsSpotifyRunning())
+                    while (true)
                     {
-                        bw.ReportProgress(0);
-                        Thread.Sleep(1000);
-                        continue;
-                    }
+                        if (!SpotifyLocalAPI.IsSpotifyRunning())
+                        {
+                            bw.ReportProgress(0);
+                            Thread.Sleep(1000);
+                            continue;
+                        }
 
-                    if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-                    {
-                        bw.ReportProgress(50);
-                        Thread.Sleep(1000);
-                        continue;
-                    }
+                        if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning())
+                        {
+                            bw.ReportProgress(50);
+                            Thread.Sleep(1000);
+                            continue;
+                        }
 
-                    if (IsConnected)
-                    {
-                        if (m_IsPlayingAd)
-                            UpdateTrack();
-                        Thread.Sleep(10000);
-                        continue;
+                        if (IsConnected)
+                        {
+                            if (m_IsPlayingAd)
+                                UpdateTrack();
+                            Thread.Sleep(10000);
+                            continue;
+                        }
+                        bw.ReportProgress(90);
+                        Thread.Sleep(3000);
+                        bw.ReportProgress(100);
                     }
-                    bw.ReportProgress(90);
-                    Thread.Sleep(3000);
-                    bw.ReportProgress(100);
+                }
+                catch (Exception)
+                {
+                    // TODO log
                 }
             };
             m_ConnectBackgroundWorker.ProgressChanged += (sender, args) =>
