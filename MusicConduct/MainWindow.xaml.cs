@@ -42,8 +42,8 @@ namespace MusicConduct
         {
             Retry.Do(() =>
             {
-                string text = $"{e.Title} by {e.Artist}";
-                if (text.Length > 64)
+                string text = e.IsAd ? "Ad playing... Get pro! ;)" : $"{e.Title} by {e.Artist}";
+                if (text.Length >= 64)
                     text = text.Substring(0, 60) + "...";
                 m_NotifyIcon.Text = text;
             }, TimeSpan.FromMilliseconds(1000), 10);

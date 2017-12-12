@@ -30,6 +30,7 @@ namespace MusicConduct.Events
             public string Title;
             public string Artist;
             public string Album;
+            public bool IsAd;
         }
 
         public event EventHandler<TrackChangeEventArgs> TrackChanged;

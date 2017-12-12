@@ -213,7 +213,7 @@ namespace MusicConduct.Controls
             // Handle ads
             if (track.IsAd())
             {
-                SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = "Ad" });
+                SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = "Ad", IsAd = true});
                 AlbumImage.Source = new BitmapImage(new Uri("/MusicConduct;component/Resources/Images/placeholder.png", UriKind.Relative));
                 TrackDetailsGrid.Visibility = Visibility.Hidden;
                 m_IsPlayingAd = true;
@@ -239,7 +239,7 @@ namespace MusicConduct.Controls
 
             TrackDetailsGrid.Visibility = Visibility.Visible;
 
-            SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = track.TrackResource.Name, Album = track.AlbumResource.Name, Artist = track.ArtistResource.Name });
+            SpotifyLocalEvents.OnTrackChange(new SpotifyLocalEvents.TrackChangeEventArgs { Title = track.TrackResource.Name, Album = track.AlbumResource.Name, Artist = track.ArtistResource.Name});
 
             UpdateAlbumArt(track);
         }
