@@ -44,12 +44,28 @@ namespace MusicConduct.Controls
             EnableRulesCheckBox.Checked += EnableRulesCheckBox_CheckedChanged;
             EnableRulesCheckBox.Unchecked += EnableRulesCheckBox_CheckedChanged;
 
+            SkipExplicitSongsCheckBox.Checked += SkipExplicitSongsCheckBoxOnChange;
+            SkipExplicitSongsCheckBox.Unchecked += SkipExplicitSongsCheckBoxOnChange;
+
+            SkipRepeatedSongsCheckBox.Checked += SkipRepeatedSongsCheckBoxOnChange;
+            SkipRepeatedSongsCheckBox.Unchecked += SkipRepeatedSongsCheckBoxOnChange;
+
             ToggleRulesGrid();
         }
-
+        
         private void RulesChanged()
         {
             RulesEvents.OnRulesChanged(new RuleEvents.RulesChangedEventArgs());
+        }
+
+        private void SkipRepeatedSongsCheckBoxOnChange(object sender, RoutedEventArgs routedEventArgs)
+        {
+            RulesChanged();
+        }
+
+        private void SkipExplicitSongsCheckBoxOnChange(object sender, RoutedEventArgs routedEventArgs)
+        {
+            RulesChanged();
         }
 
         private void EnableRulesCheckBox_CheckedChanged(object sender, RoutedEventArgs e)

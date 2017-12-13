@@ -18,11 +18,11 @@
             <RowDefinition x:Name="Top" Height="109*"/>
             <RowDefinition x:Name="Mid" Height="191*"/>
         </Grid.RowDefinitions>
-        <CheckBox Grid.Row="0" x:Name="SkipExplicitSongsCheckBox" Content="Skip explicit songs" Margin="10,10,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" IsChecked="True"/>
+        <CheckBox Grid.Row="0" x:Name="SkipExplicitSongsCheckBox" Content="Skip explicit songs" Margin="10,10,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" IsChecked="True" />
         <CheckBox Grid.Row="0" x:Name="SkipRepeatedSongsCheckBox" Margin="10,47,10,0" VerticalAlignment="Top" Foreground="White" FontFamily="Leelawadee UI" FontSize="14" Height="32" IsEnabled="False">
             <TextBlock Text="{Binding Value, ElementName=RepeatedSongTimeSlider, StringFormat='Skip repeating songs ({0} hours)'}"/>
         </CheckBox>
-        <Slider Grid.Row="0" x:Name="RepeatedSongTimeSlider" Margin="10,84,10,0" VerticalAlignment="Top" Maximum="24" SmallChange="0.5" LargeChange="3" TickFrequency="0.5" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" AutoToolTipPrecision="1" Minimum="0.5" Height="16"/>
+        <Slider Grid.Row="0" x:Name="RepeatedSongTimeSlider" Margin="10,84,10,0" VerticalAlignment="Top" Maximum="24" SmallChange="0.5" LargeChange="3" TickFrequency="0.5" IsSnapToTickEnabled="True" IsMoveToPointEnabled="True" AutoToolTipPrecision="1" Minimum="0.5" Height="16" />
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="29*"/>

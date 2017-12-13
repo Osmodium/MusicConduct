@@ -65,6 +65,7 @@ namespace MusicConduct.Controls
             m_FadeTimer.Elapsed += FadeTimerOnElapsed;
             m_FadeTimer.Interval = 100;
             m_FadeTimer.Enabled = false;
+
             RunBackgroundWorker();
         }
 
@@ -372,6 +373,7 @@ namespace MusicConduct.Controls
 
         private void UserControl_MouseEnter(object sender, MouseEventArgs e)
         {
+            m_FadeTimer.Enabled = false;
             Fade(1);
         }
 
