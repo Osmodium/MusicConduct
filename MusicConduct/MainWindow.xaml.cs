@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using MusicConduct.Controls;
 using MusicConduct.Events;
+using MusicConduct.Properties;
 using MusicConduct.Utility;
 using Label = System.Windows.Controls.Label;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -15,10 +16,15 @@ namespace MusicConduct
     {
         private AboutControl m_AboutControl;
         private NotifyIcon m_NotifyIcon;
+        private bool m_IsAlwaysOntop;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            m_IsAlwaysOntop = Settings.Default.AlwaysOnTop;
+            SetTopMost();
+
             InitializeNotificationIcon();
 
             AboutLinkLabel.MouseEnter += LinkLabel_MouseEnter;
@@ -106,13 +112,31 @@ namespace MusicConduct
             Close();
         }
 
+        private void Menu_AlwaysOnTop_OnChecked(object sender, RoutedEventArgs e)
+        {
+            m_IsAlwaysOntop = true;
+            SetTopMost();
+        }
+
+        private void Menu_AlwaysOnTop_OnUnchecked(object sender, RoutedEventArgs e)
+        {
+            m_IsAlwaysOntop = false;
+            SetTopMost();
+        }
+
+        private void SetTopMost()
+        {
+            Topmost = m_IsAlwaysOntop;
+        }
+
         private void ShowApp()
         {
             Show();
             WindowState = WindowState.Normal;
             Activate();
             Topmost = true;
-            Topmost = false;
+            if(!m_IsAlwaysOntop) 
+                Topmost = false;
             Focus();
         }
 

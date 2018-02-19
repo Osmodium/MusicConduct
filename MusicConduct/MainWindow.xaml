@@ -17,7 +17,8 @@
                         </TextBlock>
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem Header="Minimize" Click="Menu_Minimize"  FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0"/>
+                <MenuItem Header="Always on top" IsCheckable="True" Unchecked="Menu_AlwaysOnTop_OnUnchecked" Checked="Menu_AlwaysOnTop_OnChecked" FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0"/>
+                <MenuItem Header="Minimize" Click="Menu_Minimize" FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0"/>
                 <MenuItem Header="Exit" Click="Menu_Exit" FontFamily="Leelawadee UI" FontSize="12" Margin="2" Padding="0"/>
             </ContextMenu>
             <ResourceDictionary.MergedDictionaries>
